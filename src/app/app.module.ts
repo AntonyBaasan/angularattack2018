@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from 'angularfire2';
@@ -29,6 +30,7 @@ const firebaseConfig = {
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     NoopAnimationsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
