@@ -1,0 +1,28 @@
+language: node_js
+dist: trusty
+node_js: stable
+sudo: required
+addons:
+  chrome: stable
+install: true
+before_install:
+- npm install
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+before_script:
+- sudo chown root /opt/google/chrome/chrome-sandbox
+- sudo chmod 4755 /opt/google/chrome/chrome-sandbox
+branches:
+  only: master
+cache:
+  directories: node_modules
+script:
+- npm run test
+- npm run build
+deploy:
+  skip_cleanup: true
+  provider: firebase
+  token:
+    secure: "nkg6aAREp6snDVxIhhQfbPgMxut4aEcUihFqEQiKwMFY20KrDhC9WjATiJFVffw7brfyGmIQ005jc2ApBOJc39gxgeADL41ySJZ4Bbx3i3TMjzk0fu5XpxpuraHNAXz3I2/YVyhpwtntyT/o6ald/hkTf5fZQwupita68U05QtLrFvY12xuT9rDHsnIGuDM9GGyw2ygf1ngDIYisPpldGTxo4jpTdaV3PFdfIpUHaH5XR8BeCiUr3e7yIT++LUS+ABmya4i3Afw1ugXgY+YoGCW76BUa30ftz7iQ6jDJfR0Ts5cbQxk4EPHa0pyxkJfCDzO3hIWrNzdwZmcXS/Uh6rXqnIZ6+2O6QVO2hCLsDEAcZd8oHAFJ4MUoOIPtV6xCDUjcGTURuxn/SV6BkejG8guinWdvestChwQOFoMJeyVgxsrm744EfciBgDMaeWxvzDfkFee1fgEy/Pggkso44qwpmmbBkMFAzoLuLIzOboA3fANO08T32jxLYpkisz+r8KECyeK+q5FB+jSK+C29epyRwaJ2X9m+7WRWmKyC8zghGXAuVCCN/S5iWEgD3i8YE/mofV9mayWyGeciPV16MbJ8kXE++v8UMOronc6cKz8esLJAuf7BDD+FBpZr90IGg6QEQn2E0w0jFWtpEkLy5ShbIxTQBHbto49so5P7jLE="
+

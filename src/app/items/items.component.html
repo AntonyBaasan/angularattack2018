@@ -1,0 +1,17 @@
+<p>
+  items works!
+</p>
+
+{{company$ | async | json}}
+
+<h1>Company edit</h1>
+
+<div *ngIf="company">
+  <mat-form-field>
+      <input matInput placeholder="Company name" value={{company.name}} (input)="company.name=$event.target.value">
+  </mat-form-field>
+  <br/>
+  <button mat-raised-button color="primary" (click)="saveCompany(company)">save</button>
+</div>
+
+<app-item-list></app-item-list>
