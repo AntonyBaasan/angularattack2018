@@ -15,32 +15,29 @@ import { ItemsModule } from './items/items.module';
 import { CompanyService } from './services/company.service';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAE3HIecZZIZq078_S6iJ8Qc91k_nwbgI4',
-  authDomain: 'fir-test-81536.firebaseapp.com',
-  databaseURL: 'https://fir-test-81536.firebaseio.com',
-  projectId: 'fir-test-81536',
-  storageBucket: 'fir-test-81536.appspot.com',
-  messagingSenderId: '659136704215'
+  apiKey: 'AIzaSyD_D2Ui4e16t6dIR1LIVk5aL2C2McXEXqU',
+  authDomain: 'angularattack2018.firebaseapp.com',
+  databaseURL: 'https://angularattack2018.firebaseio.com',
+  projectId: 'angularattack2018',
+  storageBucket: 'angularattack2018.appspot.com',
+  messagingSenderId: '838115089884'
 };
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     NoopAnimationsModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule, AngularFireAuthModule,
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
     AppRoutingModule,
     HomeModule,
     ItemsModule
   ],
-  providers: [
-    CompanyService
-  ],
+  providers: [CompanyService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
