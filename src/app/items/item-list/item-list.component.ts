@@ -48,4 +48,10 @@ export class ItemListComponent implements OnInit {
         .post(endpoint, formData)
     );
   }
+
+  formatString(text: string): string[] {
+    let result: string[] = text.split('\n');
+
+    return result;
+  }
 }

@@ -9,6 +9,8 @@
 
 <br/>
 <button (click)="uploadFileToActivity()">upload</button>
+<br/>
+<div *ngIf="isDetecting">Detecting...</div>
 <br/> {{detectedMessage}}
 <br/> {{detectedText}}
 <br/>
