@@ -58,6 +58,9 @@ exports.receiptdetector = functions.https.onRequest((req, res) => {
     }
     else {
         // Return a "method not allowed" error
+        res.header('Content-Type', 'application/json');
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
         res.status(405).end();
     }
 });

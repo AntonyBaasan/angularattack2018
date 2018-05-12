@@ -9,20 +9,27 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ItemListComponent implements OnInit {
   fileToUpload: File = null;
+  isDetecting = false;
+  detectedMessage = '';
+  detectedText = '';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
   }
 
   uploadFileToActivity() {
+    this.isDetecting = true;
     this.postFile(this.fileToUpload).subscribe(
       data => {
         // do something, if upload success
         console.log(data);
+        this.detectedMessage = data.message;
+        this.detectedText = data.result.text;
+        setTimeout(() => { this.isDetecting = false; }, 0);
       },
       error => {
         console.log(error);
@@ -30,18 +37,15 @@ export class ItemListComponent implements OnInit {
     );
   }
 
-  postFile(fileToUpload: File): Observable<boolean> {
+  postFile(fileToUpload: File): Observable<any> {
     // const endpoint = 'http://localhost:5001/angularattack2018/us-central1/receiptdetector';
     const endpoint = 'https://us-central1-angularattack2018.cloudfunctions.net/receiptdetector';
     const formData: FormData = new FormData();
-    formData.append('fileKey', fileToUpload, fileToUpload.name);
+    formData.append('file', fileToUpload, fileToUpload.name);
     return (
       this.httpClient
         // .post(endpoint, formData, { headers:  })
         .post(endpoint, formData)
-        .map(() => {
-          return true;
-        })
     );
   }
 }

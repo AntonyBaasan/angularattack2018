@@ -4,11 +4,11 @@
 <br/>
 <div class="form-group">
   <label for="file">Choose File</label>
-  <input type="file"
-         id="file"
-         (change)="handleFileInput($event.target.files)">
+  <input type="file" id="file" (change)="handleFileInput($event.target.files)">
 </div>
 
 <br/>
 <button (click)="uploadFileToActivity()">upload</button>
+<br/> {{detectedMessage}}
+<br/> {{detectedText}}
 <br/>
