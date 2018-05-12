@@ -5,6 +5,7 @@ import { ItemsRoutingModule } from './items-routing.module';
 import { ItemListComponent } from './item-list/item-list.component';
 import { ItemsComponent } from './items.component';
 import { ImpmaterialModule } from '../impmaterial/impmaterial.module';
+import { ItemEditComponent } from './item-edit/item-edit.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { ImpmaterialModule } from '../impmaterial/impmaterial.module';
     ItemsRoutingModule,
     ImpmaterialModule
   ],
-  declarations: [ItemListComponent, ItemsComponent]
+  declarations: [ItemListComponent, ItemsComponent, ItemEditComponent]
 })
 export class ItemsModule { }
