@@ -20,6 +20,8 @@ cache:
 script:
 - npm run test
 - npm run build
+before_deploy:
+- npm install -g tslint
 deploy:
   skip_cleanup: true
   provider: firebase
