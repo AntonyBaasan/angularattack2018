@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
+import { TextutilsService } from '../../services/textutils.service';
+import { Receipt } from '../../model/receipt.model';
 
 @Component({
   selector: 'app-item-list',
@@ -8,12 +10,13 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
+  detecteReceipt: Receipt;
   fileToUpload: File = null;
   isDetecting = false;
   detectedMessage = '';
   detectedText = '';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private textUtilsService: TextutilsService) { }
 
   ngOnInit() { }
 
@@ -29,6 +32,7 @@ export class ItemListComponent implements OnInit {
         console.log(data);
         this.detectedMessage = data.message;
         this.detectedText = data.result.text;
+        this.detecteReceipt = this.recognizeReceipt(data.result.text);
         setTimeout(() => { this.isDetecting = false; }, 0);
       },
       error => {
@@ -49,9 +53,9 @@ export class ItemListComponent implements OnInit {
     );
   }
 
-  formatString(text: string): string[] {
-    let result: string[] = text.split('\n');
-
-    return result;
+  recognizeReceipt(text: string): Receipt {
+    const result = this.textUtilsService.convertToLines(text);
+    const receipt = this.textUtilsService.stringLinesToReceipt(result);
+    return receipt;
   }
 }
