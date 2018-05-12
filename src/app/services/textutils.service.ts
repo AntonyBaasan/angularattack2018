@@ -11,7 +11,7 @@ export class TextutilsService {
 
   public convertToLines(text: string): string[] {
     // tslint:disable-next-line:quotemark
-    const r = _.filter(text.split("↵"), (t: string) => {
+    const r = _.filter(text.split("\n"), (t: string) => {
       const tr = t.trim();
       if (t === '') {
         return false;
@@ -26,7 +26,7 @@ export class TextutilsService {
     const receipt: Receipt = { total: 0 };
     _.forEach(textLines, (l, index) => {
       if ((l.includes(' total') || l.startsWith('total')) && !l.includes('point')) {
-        console.log(l);
+        // console.log(l);
         receipt.total = this.getTotal(textLines, l, index, 'total');
       }
     });
@@ -38,12 +38,12 @@ export class TextutilsService {
 
     // get substring after key word
     let total = this.getValueOfKey(text, key);
-    console.log('total: ' + total);
+    // console.log('total: ' + total);
     if (total) {
       return parseFloat(total);
     } else {
       total = this.getValueOfKey(allLines[index + 1], '');
-      console.log('total: ' + total);
+      // console.log('total: ' + total);
       return parseFloat(total);
     }
   }
@@ -73,8 +73,6 @@ export class TextutilsService {
     if (m != null) {
       console.log(m);
       return m[1];
-
     }
-
   }
 }

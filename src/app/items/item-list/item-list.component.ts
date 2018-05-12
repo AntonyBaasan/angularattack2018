@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { isDevMode } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient } from '@angular/common/http';
 import { TextutilsService } from '../../services/textutils.service';
 import { Receipt } from '../../model/receipt.model';
+import { ImagedetectorService } from '../../services/imagedetector.service';
 
 @Component({
   selector: 'app-item-list',
@@ -16,7 +17,7 @@ export class ItemListComponent implements OnInit {
   detectedMessage = '';
   detectedText = '';
 
-  constructor(private httpClient: HttpClient, private textUtilsService: TextutilsService) { }
+  constructor(private textUtilsService: TextutilsService, private imagedetectorService: ImagedetectorService) { }
 
   ngOnInit() { }
 
@@ -25,31 +26,25 @@ export class ItemListComponent implements OnInit {
   }
 
   uploadFileToActivity() {
+    if (!this.fileToUpload) {
+      console.log('No file to upload!');
+      return;
+    }
     this.isDetecting = true;
-    this.postFile(this.fileToUpload).subscribe(
+    this.imagedetectorService.detectFile(this.fileToUpload).subscribe(
       data => {
         // do something, if upload success
         console.log(data);
         this.detectedMessage = data.message;
         this.detectedText = data.result.text;
         this.detecteReceipt = this.recognizeReceipt(data.result.text);
-        setTimeout(() => { this.isDetecting = false; }, 0);
       },
       error => {
         console.log(error);
+      },
+      () => {
+        setTimeout(() => { this.isDetecting = false; }, 0);
       }
-    );
-  }
-
-  postFile(fileToUpload: File): Observable<any> {
-    // const endpoint = 'http://localhost:5001/angularattack2018/us-central1/receiptdetector';
-    const endpoint = 'https://us-central1-angularattack2018.cloudfunctions.net/receiptdetector';
-    const formData: FormData = new FormData();
-    formData.append('file', fileToUpload, fileToUpload.name);
-    return (
-      this.httpClient
-        // .post(endpoint, formData, { headers:  })
-        .post(endpoint, formData)
     );
   }
 
