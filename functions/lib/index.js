@@ -3,37 +3,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const vision = require("@google-cloud/vision");
 const Busboy = require("busboy");
-const util = require("util");
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
 exports.receiptdetector = functions.https.onRequest((req, res) => {
-    console.log('req.method: ' + req.method);
-    console.log('req.headers: ' + JSON.stringify(req.headers));
     if (req.method === 'POST') {
         const busboy = new Busboy({ headers: req.headers });
         const uploads = {};
         busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-            console.log('File(main) [' +
-                fieldname +
-                ']: filename: ' +
-                filename +
-                ', encoding: ' +
-                encoding +
-                ', mimetype: ' +
-                mimetype);
             let buffer = '';
             file.setEncoding('base64');
             file.on('data', function (data) {
-                console.log('File(data) [' + fieldname + '] got ' + data.length + ' bytes');
+                // console.log('File(data) [' + fieldname + '] got ' + data.length + ' bytes');
                 buffer += data;
             });
             file.on('end', function () {
-                console.log('File(end) [' + fieldname + '] Finished ==== ' + JSON.stringify(file));
+                // console.log('File(end) [' + fieldname + '] Finished ==== ' + JSON.stringify(file));
                 uploads[fieldname] = buffer;
             });
         });
         busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
-            console.log('Field(field) [' + fieldname + ']: value: ' + util.inspect(val));
+            // console.log('Field(field) [' + fieldname + ']: value: ' + util.inspect(val));
             uploads[fieldname] = val;
         });
         busboy.on('finish', function () {
@@ -45,7 +34,7 @@ exports.receiptdetector = functions.https.onRequest((req, res) => {
                 fileBuffer = uploads[name];
                 count++;
             }
-            console.log('Done parsing form! ' + count + ' files found, len:' + len);
+            // console.log('Done parsing form! ' + count + ' files found, len:' + len);
             detectFile(fileBuffer)
                 .then(result => {
                 sendResponse(res, {
@@ -79,17 +68,15 @@ function sendResponse(res, obj) {
     res.send(obj);
 }
 function detectFile(buffer) {
-    console.log('start detection: ' + buffer.length);
+    // console.log('start detection: ' + buffer.length);
     const image = {
         content: buffer
     };
     const client = new vision.ImageAnnotatorClient();
     return client
-        .textDetection({ image: image })
+        .documentTextDetection({ image: image })
         .then(results => {
-        const detections = results[0].textAnnotations;
-        console.log('Text:');
-        detections.forEach(text => console.log(text));
+        const detections = results[0].fullTextAnnotation;
         return detections;
     })
         .catch(err => {

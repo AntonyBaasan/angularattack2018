@@ -22,6 +22,7 @@ export class ItemListComponent implements OnInit {
     this.postFile(this.fileToUpload).subscribe(
       data => {
         // do something, if upload success
+        console.log(data);
       },
       error => {
         console.log(error);

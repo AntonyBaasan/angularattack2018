@@ -8,38 +8,21 @@ import * as util from 'util';
 
 export const receiptdetector = functions.https.onRequest((req, res) => {
 
-  console.log('req.method: ' + req.method);
-  console.log('req.headers: ' + JSON.stringify(req.headers));
-
   if (req.method === 'POST') {
     const busboy = new Busboy({ headers: req.headers });
     const uploads = {};
 
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-      console.log(
-        'File(main) [' +
-        fieldname +
-        ']: filename: ' +
-        filename +
-        ', encoding: ' +
-        encoding +
-        ', mimetype: ' +
-        mimetype
-      );
       let buffer = '';
 
       file.setEncoding('base64');
       file.on('data', function (data) {
-        console.log(
-          'File(data) [' + fieldname + '] got ' + data.length + ' bytes'
-        );
+        // console.log('File(data) [' + fieldname + '] got ' + data.length + ' bytes');
         buffer += data;
       });
 
       file.on('end', function () {
-        console.log(
-          'File(end) [' + fieldname + '] Finished ==== ' + JSON.stringify(file)
-        );
+        // console.log('File(end) [' + fieldname + '] Finished ==== ' + JSON.stringify(file));
         uploads[fieldname] = buffer;
       });
     });
@@ -52,9 +35,7 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
       encoding,
       mimetype
     ) {
-      console.log(
-        'Field(field) [' + fieldname + ']: value: ' + util.inspect(val)
-      );
+      // console.log('Field(field) [' + fieldname + ']: value: ' + util.inspect(val));
       uploads[fieldname] = val;
     });
 
@@ -68,7 +49,7 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
         count++;
       }
 
-      console.log('Done parsing form! ' + count + ' files found, len:' + len);
+      // console.log('Done parsing form! ' + count + ' files found, len:' + len);
       detectFile(fileBuffer)
         .then(result => {
           sendResponse(res, {
@@ -103,7 +84,7 @@ function sendResponse(res, obj) {
 }
 
 function detectFile(buffer) {
-  console.log('start detection: ' + buffer.length);
+  // console.log('start detection: ' + buffer.length);
   const image = {
     content: buffer
   };
@@ -111,11 +92,9 @@ function detectFile(buffer) {
   const client = new vision.ImageAnnotatorClient();
 
   return client
-    .textDetection({ image: image })
+    .documentTextDetection({ image: image })
     .then(results => {
-      const detections = results[0].textAnnotations;
-      console.log('Text:');
-      detections.forEach(text => console.log(text));
+      const detections = results[0].fullTextAnnotation;
 
       return detections;
     })
