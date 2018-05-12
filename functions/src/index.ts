@@ -1,9 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as vision from '@google-cloud/vision';
 import * as Busboy from 'busboy';
-import * as os from 'os';
-import * as fs from 'fs';
-import * as path from 'path';
 import * as util from 'util';
 
 // Start writing Firebase Functions
@@ -18,28 +15,28 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
     const busboy = new Busboy({ headers: req.headers });
     const uploads = {};
 
-    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+    busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       console.log(
         'File(main) [' +
-          fieldname +
-          ']: filename: ' +
-          filename +
-          ', encoding: ' +
-          encoding +
-          ', mimetype: ' +
-          mimetype
+        fieldname +
+        ']: filename: ' +
+        filename +
+        ', encoding: ' +
+        encoding +
+        ', mimetype: ' +
+        mimetype
       );
       let buffer = '';
 
       file.setEncoding('base64');
-      file.on('data', function(data) {
+      file.on('data', function (data) {
         console.log(
           'File(data) [' + fieldname + '] got ' + data.length + ' bytes'
         );
         buffer += data;
       });
 
-      file.on('end', function() {
+      file.on('end', function () {
         console.log(
           'File(end) [' + fieldname + '] Finished ==== ' + JSON.stringify(file)
         );
@@ -47,7 +44,7 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
       });
     });
 
-    busboy.on('field', function(
+    busboy.on('field', function (
       fieldname,
       val,
       fieldnameTruncated,
@@ -61,7 +58,7 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
       uploads[fieldname] = val;
     });
 
-    busboy.on('finish', function() {
+    busboy.on('finish', function () {
       let count = 0;
       let len = 0;
       let fileBuffer = '';
@@ -86,18 +83,23 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
           });
         });
     });
-    req.pipe(busboy);
+    if ((req as any).rawBody) {
+      busboy.end((req as any).rawBody);
+    }
+    else {
+      req.pipe(busboy);
+    }
   } else {
     // Return a "method not allowed" error
     res.status(405).end();
   }
 });
 
-function sendResponse(res, obj){
-  res.header('Content-Type','application/json');
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.send(obj);
+function sendResponse(res, obj) {
+  res.header('Content-Type', 'application/json');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.send(obj);
 }
 
 function detectFile(buffer) {

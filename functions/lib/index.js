@@ -60,7 +60,12 @@ exports.receiptdetector = functions.https.onRequest((req, res) => {
                 });
             });
         });
-        req.pipe(busboy);
+        if (req.rawBody) {
+            busboy.end(req.rawBody);
+        }
+        else {
+            req.pipe(busboy);
+        }
     }
     else {
         // Return a "method not allowed" error
