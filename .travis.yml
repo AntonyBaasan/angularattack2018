@@ -22,6 +22,7 @@ script:
 - npm run build
 before_deploy:
 - npm install -g tslint
+- npm install -g typescript
 deploy:
   skip_cleanup: true
   provider: firebase
