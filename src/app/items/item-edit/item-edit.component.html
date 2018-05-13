@@ -11,3 +11,13 @@
 <br/> {{detectedMessage}}
 <br/> {{detectedText}}
 <br/>
+
+<div>
+  <mat-form-field>
+    <input matInput placeholder="Title" value={{receipt.title}} (input)="receipt.title=$event.target.value">
+    <input matInput placeholder="Description" value={{receipt.description}} (input)="receipt.description=$event.target.value">
+    <input matInput placeholder="Total" value={{receipt.total}} (input)="receipt.total=$event.target.value">
+  </mat-form-field>
+  <br/>
+  <button mat-raised-button color="primary" (click)="saveReceipt(receipt)">save</button>
+</div>

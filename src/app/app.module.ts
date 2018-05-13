@@ -13,7 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';
 import { ItemsModule } from './items/items.module';
-import { CompanyService } from './services/company.service';
+import { ReceiptService } from './services/receipt.service';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD_D2Ui4e16t6dIR1LIVk5aL2C2McXEXqU',
@@ -39,7 +39,7 @@ const firebaseConfig = {
     HomeModule,
     ItemsModule
   ],
-  providers: [CompanyService],
+  providers: [ReceiptService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

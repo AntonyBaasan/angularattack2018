@@ -1,5 +1,13 @@
 <p>
-<app-item-edit></app-item-edit>
+  <app-item-edit></app-item-edit>
 </p>
+
 <br/>
+
+<div *ngFor="let r of receipts$ | async">
+  <a>{{r.title}}</a>
+  <a>{{r.total}}</a>
+  <a>{{r.date}}</a>
+</div>
+
 <button (click)="addNew()">New</button>

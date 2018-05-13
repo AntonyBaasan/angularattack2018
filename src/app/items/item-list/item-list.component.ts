@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { TextutilsService } from '../../services/textutils.service';
 import { Receipt } from '../../model/receipt.model';
 import { ImagedetectorService } from '../../services/imagedetector.service';
+import { ReceiptService } from '../../services/receipt.service';
 
 @Component({
   selector: 'app-item-list',
@@ -11,9 +12,15 @@ import { ImagedetectorService } from '../../services/imagedetector.service';
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
+  receipts$: Observable<Receipt[]>;
 
-  constructor() { }
+  constructor(private receiptService: ReceiptService) {
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.receipts$ = this.receiptService.getReceipts();
+  }
+
+  addNew() { }
 
 }
