@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { Receipt } from '../../model/receipt.model';
 import { TextutilsService } from '../../services/textutils.service';
 import { ImagedetectorService } from '../../services/imagedetector.service';
@@ -38,7 +38,7 @@ export class ItemEditComponent implements OnInit {
       return;
     }
     this.isDetecting = true;
-    this.imagedetectorService.detectFile(this.fileToUpload).subscribe(
+    this.executeDetection(this.fileToUpload).subscribe(
       data => {
         // do something, if upload success
         console.log(data);
@@ -53,6 +53,14 @@ export class ItemEditComponent implements OnInit {
         setTimeout(() => { this.isDetecting = false; }, 0);
       }
     );
+  }
+
+  executeDetection(file: File) {
+    if (isDevMode()) {
+      return this.imagedetectorService.detectFileFake(file);
+    }
+
+    return this.imagedetectorService.detectFile(file);
   }
 
   recognizeReceipt(text: string): Receipt {

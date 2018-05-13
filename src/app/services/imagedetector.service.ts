@@ -19,6 +19,23 @@ export class ImagedetectorService {
         .post(endpoint, formData)
     );
   }
+  public detectFileFake(fileToUpload: File): Observable<any> {
+    return Observable.create((observer) => {
+      // Yield a single value and complete
+      observer.next({
+        message: 'hello world',
+        result: {
+          text: 'total: $100'
+        }
+      });
+      observer.complete();
+
+      // Any cleanup logic might go here
+      return () => {
+        console.log('disposed');
+      };
+    });
+  }
 
   private getEndpoint() {
     // if (isDevMode()) {
