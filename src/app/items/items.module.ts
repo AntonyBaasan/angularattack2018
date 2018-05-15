@@ -8,11 +8,8 @@ import { ImpmaterialModule } from '../impmaterial/impmaterial.module';
 import { ItemEditComponent } from './item-edit/item-edit.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ItemsRoutingModule,
-    ImpmaterialModule
-  ],
-  declarations: [ItemListComponent, ItemsComponent, ItemEditComponent]
+  imports: [CommonModule, ItemsRoutingModule, ImpmaterialModule],
+  declarations: [ItemListComponent, ItemsComponent, ItemEditComponent],
+  entryComponents: [ItemEditComponent]
 })
-export class ItemsModule { }
+export class ItemsModule {}

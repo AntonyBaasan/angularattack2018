@@ -3,13 +3,13 @@ import {
   OnInit,
   isDevMode,
   EventEmitter,
-  Output,
-  Input
+  Inject
 } from '@angular/core';
 import { Receipt } from '../../model/receipt.model';
 import { TextutilsService } from '../../services/textutils.service';
 import { ImagedetectorService } from '../../services/imagedetector.service';
 import { ReceiptService } from '../../services/receipt.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-item-edit',
@@ -17,8 +17,7 @@ import { ReceiptService } from '../../services/receipt.service';
   styleUrls: ['./item-edit.component.css']
 })
 export class ItemEditComponent implements OnInit {
-  @Output() doneClick = new EventEmitter();
-  @Input() receipt: Receipt;
+  receipt: Receipt;
 
   fileToUpload: File = null;
   isDetecting = false;
@@ -28,10 +27,14 @@ export class ItemEditComponent implements OnInit {
   constructor(
     private textUtilsService: TextutilsService,
     private receiptService: ReceiptService,
-    private imagedetectorService: ImagedetectorService
+    private imagedetectorService: ImagedetectorService,
+    public dialogRef: MatDialogRef<ItemEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.receipt = this.data.receipt;
+  }
 
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
@@ -78,6 +81,6 @@ export class ItemEditComponent implements OnInit {
 
   saveReceipt(receipt: Receipt) {
     this.receiptService.save(receipt);
-    this.doneClick.emit();
+    this.dialogRef.close();
   }
 }

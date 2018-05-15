@@ -10,7 +10,3 @@
 </div>
 
 <button (click)="addNew()">New</button>
-
-<p *ngIf="isEditing">
-  <app-item-edit (doneClick)="doneClick($event)" [receipt]="targetReceipt"></app-item-edit>
-</p>
