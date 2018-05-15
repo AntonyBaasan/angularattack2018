@@ -25,7 +25,11 @@ export class ItemEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.receipt = {};
+    this.receipt = {
+      title: 'title 1',
+      description: 'desc 1',
+      total: 10
+    };
   }
 
   handleFileInput(files: FileList) {
