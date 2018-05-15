@@ -6,12 +6,11 @@ import { Receipt } from '../model/receipt.model';
   providedIn: 'root'
 })
 export class TextutilsService {
-
-  constructor() { }
+  constructor() {}
 
   public convertToLines(text: string): string[] {
     // tslint:disable-next-line:quotemark
-    const r = _.filter(text.split("\n"), (t: string) => {
+    const r = _.filter(text.split('\n'), (t: string) => {
       const tr = t.trim();
       if (t === '') {
         return false;
@@ -19,23 +18,34 @@ export class TextutilsService {
       return true;
     });
 
-    return _.map(r, (s) => (s.toLowerCase()));
+    return _.map(r, s => s.toLowerCase());
   }
 
   public stringLinesToReceipt(textLines: string[]): Receipt {
     const receipt: Receipt = { total: 0 };
     _.forEach(textLines, (l, index) => {
-        // console.log(l);
-        receipt.title = textLines[0];
+      // console.log(l);
+      receipt.title = textLines[0];
+
+      if (!receipt.total) {
         receipt.total = this.getTotal(textLines, l, index, 'total');
+      }
     });
 
     return receipt;
   }
 
-  private getTotal(allLines: string[], text: string, index: number, key: string): number {
-    if (!((text.includes(' total') || text.startsWith('total')) && !text.includes('point'))) {
-      return;
+  private getTotal(
+    allLines: string[],
+    text: string,
+    index: number,
+    key: string
+  ): number {
+    if (
+      !(text.includes(' ' + key) || text.startsWith(key)) ||
+      text.includes('point')
+    ) {
+      return 0;
     }
 
     // get substring after key word

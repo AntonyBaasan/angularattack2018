@@ -24,7 +24,7 @@ describe('TextutilsService', () => {
     }));
   });
 
-  xdescribe('DONE', () => {
+  describe('DONE', () => {
 
     it('should analyze analyze plain detected text', inject([TextutilsService], (service: TextutilsService) => {
       const plain = 'SIGVARIS\nPatient\nPRESCRIPTION\n';
