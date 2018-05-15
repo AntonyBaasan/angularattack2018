@@ -1,4 +1,11 @@
-import { Component, OnInit, isDevMode, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  isDevMode,
+  EventEmitter,
+  Output,
+  Input
+} from '@angular/core';
 import { Receipt } from '../../model/receipt.model';
 import { TextutilsService } from '../../services/textutils.service';
 import { ImagedetectorService } from '../../services/imagedetector.service';
@@ -11,8 +18,8 @@ import { ReceiptService } from '../../services/receipt.service';
 })
 export class ItemEditComponent implements OnInit {
   @Output() doneClick = new EventEmitter();
+  @Input() receipt: Receipt;
 
-  receipt: Receipt;
   fileToUpload: File = null;
   isDetecting = false;
   detectedMessage = '';
@@ -24,13 +31,7 @@ export class ItemEditComponent implements OnInit {
     private imagedetectorService: ImagedetectorService
   ) {}
 
-  ngOnInit() {
-    this.receipt = {
-      title: 'title 1',
-      description: 'desc 1',
-      total: 10
-    };
-  }
+  ngOnInit() {}
 
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
@@ -76,7 +77,7 @@ export class ItemEditComponent implements OnInit {
   }
 
   saveReceipt(receipt: Receipt) {
-    // this.receiptService.save(receipt);
+    this.receiptService.save(receipt);
     this.doneClick.emit();
   }
 }

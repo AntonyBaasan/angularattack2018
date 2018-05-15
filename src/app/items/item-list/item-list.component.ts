@@ -14,6 +14,7 @@ import { ReceiptService } from '../../services/receipt.service';
 export class ItemListComponent implements OnInit {
   receipts$: Observable<Receipt[]>;
   isEditing = false;
+  targetReceipt: Receipt;
 
   constructor(private receiptService: ReceiptService) {}
 
@@ -22,9 +23,21 @@ export class ItemListComponent implements OnInit {
   }
 
   addNew() {
+    this.targetReceipt = this.receiptService.getNewReceiptTemplate();
     this.isEditing = true;
   }
+
   doneClick() {
-    console.log('hellow world');
+    console.log('Done');
+    this.isEditing = false;
+  }
+
+  edit(receipt: Receipt) {
+    this.isEditing = true;
+    this.targetReceipt = receipt;
+  }
+
+  remove(receipt: Receipt) {
+    this.receiptService.remove(receipt);
   }
 }

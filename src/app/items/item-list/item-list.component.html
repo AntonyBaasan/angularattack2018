@@ -1,13 +1,16 @@
-<p>
-  <app-item-edit (doneClick)="doneClick($event)"></app-item-edit>
-</p>
-
 <br/>
 
 <div *ngFor="let r of receipts$ | async">
-  <a>{{r.title}}</a>
-  <a>{{r.total}}</a>
-  <a>{{r.date}}</a>
+  <a>{{r.title}}</a> |
+  <a>{{r.total}}</a> |
+  <a>{{r.date}}</a> |
+  <button (click)="remove(r)">remove</button>
+  <button (click)="edit(r)">edit</button>
+  <br/>
 </div>
 
 <button (click)="addNew()">New</button>
+
+<p *ngIf="isEditing">
+  <app-item-edit (doneClick)="doneClick($event)" [receipt]="targetReceipt"></app-item-edit>
+</p>

@@ -25,7 +25,7 @@ export class ImagedetectorService {
       observer.next({
         message: 'hello world',
         result: {
-          text: 'total: $100'
+          text: 'Walmart\ntotal: $100'
         }
       });
       observer.complete();

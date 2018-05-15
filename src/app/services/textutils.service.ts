@@ -25,16 +25,18 @@ export class TextutilsService {
   public stringLinesToReceipt(textLines: string[]): Receipt {
     const receipt: Receipt = { total: 0 };
     _.forEach(textLines, (l, index) => {
-      if ((l.includes(' total') || l.startsWith('total')) && !l.includes('point')) {
         // console.log(l);
+        receipt.title = textLines[0];
         receipt.total = this.getTotal(textLines, l, index, 'total');
-      }
     });
 
     return receipt;
   }
 
   private getTotal(allLines: string[], text: string, index: number, key: string): number {
+    if (!((text.includes(' total') || text.startsWith('total')) && !text.includes('point'))) {
+      return;
+    }
 
     // get substring after key word
     let total = this.getValueOfKey(text, key);

@@ -1,5 +1,5 @@
 export interface Receipt {
-    $key?: string;
+    key?: string;
     title?: string;
     description?: string;
     date?: string;

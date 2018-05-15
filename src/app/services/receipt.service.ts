@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
+import {
+  AngularFireDatabase,
+  AngularFireObject,
+  AngularFireList
+} from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { Receipt } from '../model/receipt.model';
+import { map } from '@firebase/util';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +14,19 @@ import { Receipt } from '../model/receipt.model';
 export class ReceiptService {
   public receipts$: AngularFireList<Receipt>;
 
+  getNewReceiptTemplate(): Receipt {
+    return {
+      title: 'New title',
+      description: 'New description',
+      total: 0
+    };
+  }
   getReceipts(): Observable<Receipt[]> {
-    return this.receipts$.valueChanges();
+    return this.receipts$.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        return { key: snap.key, ...snap.payload.val() } as Receipt;
+      });
+    });
   }
 
   constructor(private af: AngularFireDatabase) {
@@ -19,10 +35,17 @@ export class ReceiptService {
 
   // this is destructive (recrates an object)
   save(receipt: Receipt) {
-    if (receipt.$key) {
-      // this.receipts$.update(receipt);
+    if (receipt.key) {
+      this.receipts$.update(receipt.key, receipt);
+      // this.receipts$.set(receipt.key, receipt);
     } else {
-      this.receipts$.push(receipt);
+      return this.receipts$.push(receipt);
+    }
+  }
+
+  remove(receipt: Receipt) {
+    if (receipt.key) {
+      this.receipts$.remove(receipt.key);
     }
   }
 }
