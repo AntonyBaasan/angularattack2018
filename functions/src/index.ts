@@ -41,10 +41,10 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
 
     busboy.on('finish', function () {
       let count = 0;
-      let len = 0;
+      // let len = 0;
       let fileBuffer = '';
       for (const name in uploads) {
-        len = uploads[name].length;
+        // len = uploads[name].length;
         fileBuffer = uploads[name];
         count++;
       }
