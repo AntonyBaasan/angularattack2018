@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as vision from '@google-cloud/vision';
 import * as Busboy from 'busboy';
-import * as util from 'util';
+// import * as util from 'util';
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
