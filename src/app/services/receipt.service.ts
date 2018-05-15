@@ -23,7 +23,6 @@ export class ReceiptService {
       // this.receipts$.update(receipt);
     } else {
       this.receipts$.push(receipt);
-
     }
   }
 }

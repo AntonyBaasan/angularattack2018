@@ -13,14 +13,18 @@ import { ReceiptService } from '../../services/receipt.service';
 })
 export class ItemListComponent implements OnInit {
   receipts$: Observable<Receipt[]>;
+  isEditing = false;
 
-  constructor(private receiptService: ReceiptService) {
-  }
+  constructor(private receiptService: ReceiptService) {}
 
   ngOnInit() {
     this.receipts$ = this.receiptService.getReceipts();
   }
 
-  addNew() { }
-
+  addNew() {
+    this.isEditing = true;
+  }
+  doneClick() {
+    console.log('hellow world');
+  }
 }
