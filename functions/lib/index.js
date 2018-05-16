@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const vision = require("@google-cloud/vision");
 const Busboy = require("busboy");
+// import * as util from 'util';
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
 exports.receiptdetector = functions.https.onRequest((req, res) => {
@@ -27,10 +28,10 @@ exports.receiptdetector = functions.https.onRequest((req, res) => {
         });
         busboy.on('finish', function () {
             let count = 0;
-            let len = 0;
+            // let len = 0;
             let fileBuffer = '';
             for (const name in uploads) {
-                len = uploads[name].length;
+                // len = uploads[name].length;
                 fileBuffer = uploads[name];
                 count++;
             }
@@ -49,8 +50,8 @@ exports.receiptdetector = functions.https.onRequest((req, res) => {
                 });
             });
         });
-        if (req.rawBody) {
-            busboy.end(req.rawBody);
+        if ('rawBody' in req) {
+            busboy.end(req['rawBody']);
         }
         else {
             req.pipe(busboy);

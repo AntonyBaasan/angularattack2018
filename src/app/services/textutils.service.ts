@@ -61,10 +61,9 @@ export class TextutilsService {
   }
 
   private getValueOfKey(text: string, key: string): string {
-    console.log('before', text);
-    // const left = text.substr(text.indexOf(key), key.length);
+    // console.log('before', text);
     const left = this.truncateBefore(text, key);
-    console.log('left', left);
+    // console.log('left', left);
     return this.findNumberInLine(left);
   }
 
@@ -77,13 +76,13 @@ export class TextutilsService {
   }
 
   private findNumberInLine(text: string) {
-    console.log(text);
+    // console.log(text);
 
     const re = new RegExp('[\\s$]*([\\d\\.]+)');
     const m = text.match(re);
 
     if (m != null) {
-      console.log(m);
+      // console.log(m);
       return m[1];
     }
   }
