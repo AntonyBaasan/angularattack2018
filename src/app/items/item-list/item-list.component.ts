@@ -11,7 +11,7 @@ import { ItemEditComponent } from '../item-edit/item-edit.component';
 @Component({
   selector: 'app-item-list',
   templateUrl: './item-list.component.html',
-  styleUrls: ['./item-list.component.css'],
+  styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
   receipts$: Observable<Receipt[]>;
@@ -38,7 +38,7 @@ export class ItemListComponent implements OnInit {
 
   private showDialog(receipt: Receipt) {
     const dialogRef = this.dialog.open(ItemEditComponent, {
-      height: '550px',
+      width: '550px',
       data: { receipt: receipt }
     });
 

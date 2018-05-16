@@ -1,33 +1,45 @@
-<div class="form-group">
-  <label for="file">Choose File</label>
-  <input type="file" id="file" (change)="handleFileInput($event.target.files)">
-</div>
-
-<br/>
-<button (click)="uploadFileToActivity()">upload</button>
-<br/>
-<div *ngIf="isDetecting">Detecting...</div>
-<br/> {{detecteReceipt | json}}
-<br/> {{detectedMessage}}
-<br/> {{detectedText}}
-<br/>
-
 <div>
-  <div>
-    <mat-form-field>
-      <input matInput placeholder="Title" value={{receipt.title}} (input)="receipt.title=$event.target.value">
-    </mat-form-field>
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+    <div class="row">
+
+      <div class="column">
+        <div>
+          <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+        </div>
+        <div>
+          <button mat-button (click)="uploadFileToActivity()">upload</button>
+        </div>
+        <div>
+          <div *ngIf="isDetecting">Detecting...</div>
+          <br/> {{detecteReceipt | json}}
+          <br/> {{detectedMessage}}
+          <br/> {{detectedText}}
+        </div>
+      </div>
+
+      <div class="column">
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Title" value={{receipt.title}} (input)="receipt.title=$event.target.value">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Description" value={{receipt.description}} (input)="receipt.description=$event.target.value">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Total" value={{receipt.total}} (input)="receipt.total=$event.target.value">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <div mat-dialog-actions bottom>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button (click)="saveReceipt(receipt)" cdkFocusInitial>Save</button>
   </div>
-  <div>
-    <mat-form-field>
-      <input matInput placeholder="Description" value={{receipt.description}} (input)="receipt.description=$event.target.value">
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field>
-      <input matInput placeholder="Total" value={{receipt.total}} (input)="receipt.total=$event.target.value">
-    </mat-form-field>
-  </div>
-  <br/>
-  <button mat-raised-button color="primary" (click)="saveReceipt(receipt)">save</button>
 </div>

@@ -9,7 +9,7 @@ import { Receipt } from '../../model/receipt.model';
 import { TextutilsService } from '../../services/textutils.service';
 import { ImagedetectorService } from '../../services/imagedetector.service';
 import { ReceiptService } from '../../services/receipt.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-item-edit',
@@ -18,6 +18,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 })
 export class ItemEditComponent implements OnInit {
   receipt: Receipt;
+  title = 'New';
 
   fileToUpload: File = null;
   isDetecting = false;
@@ -81,6 +82,10 @@ export class ItemEditComponent implements OnInit {
 
   saveReceipt(receipt: Receipt) {
     this.receiptService.save(receipt);
+    this.dialogRef.close();
+  }
+
+  onCancel() {
     this.dialogRef.close();
   }
 }
