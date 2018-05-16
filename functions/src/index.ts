@@ -64,8 +64,8 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
           });
         });
     });
-    if ((req as any).rawBody) {
-      busboy.end((req as any).rawBody);
+    if ('rawBody' in req) {
+      busboy.end(req['rawBody']);
     }
     else {
       req.pipe(busboy);
