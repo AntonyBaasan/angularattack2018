@@ -40,5 +40,15 @@ describe('TextutilsService', () => {
         expect(receipt.date).toEqual(new Date('11/29/18 04:04:16'));
       })
     );
+    it(
+      'should usa date format',
+      inject([TextutilsService], (service: TextutilsService) => {
+        const plain =
+          'MISSISSAUGA ,ON, L5B 209\n905-566-7003\n04/07/2017 11:36 AM\n1499';
+        const converted = service.convertToLines(plain);
+        const receipt: Receipt = service.stringLinesToReceipt(converted);
+        expect(receipt.date).toEqual(new Date('04/07/2017 11:36 AM'));
+      })
+    );
   });
 });

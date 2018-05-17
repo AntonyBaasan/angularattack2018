@@ -82,9 +82,9 @@ export class ItemEditComponent implements OnInit {
   }
 
   executeDetection(file: File) {
-    if (isDevMode()) {
-      return this.imagedetectorService.detectFileFake(file);
-    }
+    // if (isDevMode()) {
+    //   return this.imagedetectorService.detectFileFake(file);
+    // }
 
     return this.imagedetectorService.detectFile(file);
   }
