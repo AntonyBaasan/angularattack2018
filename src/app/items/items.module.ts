@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { ItemsRoutingModule } from './items-routing.module';
@@ -9,7 +10,7 @@ import { ItemEditComponent } from './item-edit/item-edit.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [CommonModule, ItemsRoutingModule, ImpmaterialModule, SharedModule],
+  imports: [CommonModule, ReactiveFormsModule, ItemsRoutingModule, ImpmaterialModule, SharedModule],
   declarations: [ItemListComponent, ItemsComponent, ItemEditComponent],
   entryComponents: [
     ItemEditComponent // this fixes material dialog component issue

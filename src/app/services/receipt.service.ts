@@ -18,6 +18,7 @@ export class ReceiptService {
     return {
       title: 'New title',
       description: 'New description',
+      date: new Date(''),
       total: 0
     };
   }

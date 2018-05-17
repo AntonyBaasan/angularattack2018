@@ -11,8 +11,15 @@ import { Receipt } from '../../model/receipt.model';
 import { TextutilsService } from '../../services/textutils.service';
 import { ImagedetectorService } from '../../services/imagedetector.service';
 import { ReceiptService } from '../../services/receipt.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDatepickerInputEvent,
+  MatDatepicker
+} from '@angular/material';
 import { ImageDropComponent } from '../../shared/image-drop/image-drop.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-item-edit',
@@ -21,6 +28,7 @@ import { ImageDropComponent } from '../../shared/image-drop/image-drop.component
 })
 export class ItemEditComponent implements OnInit {
   @ViewChild(ImageDropComponent) imageDropComponentRef: ImageDropComponent;
+  @ViewChild(MatDatepicker) picker: MatDatepicker<Date>;
   receipt: Receipt;
   title = 'New';
 
@@ -28,6 +36,7 @@ export class ItemEditComponent implements OnInit {
   isDetecting = false;
   detectedMessage = '';
   detectedText = '';
+  today = new FormControl(new Date());
 
   constructor(
     private textUtilsService: TextutilsService,
@@ -97,5 +106,18 @@ export class ItemEditComponent implements OnInit {
 
   imageChanged() {
     this.uploadFileToActivity();
+  }
+
+  dateChanged(type: string, event: MatDatepickerInputEvent<Date>) {
+    console.log(event.value);
+    this.receipt.date = event.value;
+  }
+
+  convertDateToForm(date: Date) {
+    if (date) {
+      return new FormControl(date);
+    }
+
+    return new FormControl('');
   }
 }

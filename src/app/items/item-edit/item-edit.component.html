@@ -25,6 +25,13 @@
         </div>
         <div>
           <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Date"  (dateChange)="dateChanged('change', $event)" [formControl]="convertDateToForm(receipt.date)">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker touchUi="true"></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
             <input matInput placeholder="Total" value={{receipt.total}} (input)="receipt.total=$event.target.value">
           </mat-form-field>
         </div>

@@ -1,12 +1,12 @@
-<br/>
-
-<div *ngFor="let r of receipts$ | async">
-  <a>{{r.title}}</a> |
-  <a>{{r.total}}</a> |
-  <a>{{r.date}}</a> |
-  <button (click)="remove(r)">remove</button>
-  <button (click)="edit(r)">edit</button>
-  <br/>
+<div>
+  <div *ngFor="let r of receipts$ | async">
+    <a>{{r.title}}</a> |
+    <a>{{r.description}}</a> |
+    <a>{{r.date}}</a> |
+    <a>{{r.total}}</a> |
+    <button (click)="edit(r)">edit</button>
+    <button (click)="remove(r)">remove</button>
+  </div>
 </div>
 
 <button (click)="addNew()">New</button>
