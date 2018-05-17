@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
 import { isDevMode } from '@angular/core';
 import { MatDialog } from '@angular/material';
@@ -39,7 +40,7 @@ export class ItemListComponent implements OnInit {
   private showDialog(receipt: Receipt) {
     const dialogRef = this.dialog.open(ItemEditComponent, {
       width: '550px',
-      data: { receipt: receipt }
+      data: { receipt: _.cloneDeep(receipt) }
     });
 
     dialogRef.afterClosed().subscribe(result => {
