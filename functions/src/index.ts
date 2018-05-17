@@ -7,27 +7,26 @@ import * as Busboy from 'busboy';
 // https://firebase.google.com/docs/functions/typescript
 
 export const receiptdetector = functions.https.onRequest((req, res) => {
-
   if (req.method === 'POST') {
     const busboy = new Busboy({ headers: req.headers });
     const uploads = {};
 
-    busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
       let buffer = '';
 
       file.setEncoding('base64');
-      file.on('data', function (data) {
+      file.on('data', function(data) {
         // console.log('File(data) [' + fieldname + '] got ' + data.length + ' bytes');
         buffer += data;
       });
 
-      file.on('end', function () {
+      file.on('end', function() {
         // console.log('File(end) [' + fieldname + '] Finished ==== ' + JSON.stringify(file));
         uploads[fieldname] = buffer;
       });
     });
 
-    busboy.on('field', function (
+    busboy.on('field', function(
       fieldname,
       val,
       fieldnameTruncated,
@@ -39,7 +38,7 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
       uploads[fieldname] = val;
     });
 
-    busboy.on('finish', function () {
+    busboy.on('finish', function() {
       let count = 0;
       // let len = 0;
       let fileBuffer = '';
@@ -66,8 +65,7 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
     });
     if ('rawBody' in req) {
       busboy.end(req['rawBody']);
-    }
-    else {
+    } else {
       req.pipe(busboy);
     }
   } else {
@@ -97,9 +95,7 @@ function detectFile(buffer) {
   return client
     .documentTextDetection({ image: image })
     .then(results => {
-      const detections = results[0].fullTextAnnotation;
-
-      return detections;
+      return results[0].fullTextAnnotation;
     })
     .catch(err => {
       console.error('ERROR:', err);
