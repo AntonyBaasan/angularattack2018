@@ -14,15 +14,7 @@ import { HomeModule } from './home/home.module';
 import { ItemsModule } from './items/items.module';
 import { ReceiptService } from './services/receipt.service';
 import { SharedModule } from './shared/shared.module';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyD_D2Ui4e16t6dIR1LIVk5aL2C2McXEXqU',
-  authDomain: 'angularattack2018.firebaseapp.com',
-  databaseURL: 'https://angularattack2018.firebaseio.com',
-  projectId: 'angularattack2018',
-  storageBucket: 'angularattack2018.appspot.com',
-  messagingSenderId: '838115089884'
-};
+import { firebaseConfig } from './config/firebase-config';
 
 @NgModule({
   declarations: [AppComponent],
