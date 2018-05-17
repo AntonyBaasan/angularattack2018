@@ -3,13 +3,16 @@ import {
   OnInit,
   isDevMode,
   EventEmitter,
-  Inject
+  Inject,
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 import { Receipt } from '../../model/receipt.model';
 import { TextutilsService } from '../../services/textutils.service';
 import { ImagedetectorService } from '../../services/imagedetector.service';
 import { ReceiptService } from '../../services/receipt.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ImageDropComponent } from '../../shared/image-drop/image-drop.component';
 
 @Component({
   selector: 'app-item-edit',
@@ -17,6 +20,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./item-edit.component.css']
 })
 export class ItemEditComponent implements OnInit {
+  @ViewChild(ImageDropComponent) imageDropComponentRef: ImageDropComponent;
   receipt: Receipt;
   title = 'New';
 
@@ -42,6 +46,8 @@ export class ItemEditComponent implements OnInit {
   }
 
   uploadFileToActivity() {
+    this.fileToUpload = this.imageDropComponentRef.getFile();
+
     if (!this.fileToUpload) {
       console.log('No file to upload!');
       return;
@@ -87,5 +93,9 @@ export class ItemEditComponent implements OnInit {
 
   onCancel() {
     this.dialogRef.close();
+  }
+
+  imageChanged() {
+    this.uploadFileToActivity();
   }
 }

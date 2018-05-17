@@ -1,5 +1,5 @@
-<div class="uploader" onclick="$('#filePhoto').click()">
-  click here or drag here your images for preview and set userprofile_picture data
-  <img src="" />
-  <input type="file" name="userprofile_picture" id="filePhoto" />
+<div #uploader class="uploader" (click)="onClickUploader()">
+  click here or drag here your images
+  <img #image src="" />
+  <input #filePhoto type="file" name="picture" id="filePhoto" (change)="ImageChange($event)"/>
 </div>

@@ -3,22 +3,12 @@
 
   <mat-dialog-content>
     <div class="row">
-
       <div class="column">
         <div>
-          <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+          <app-image-drop (imageChanged)="imageChanged()"></app-image-drop>
         </div>
         <div>
-          <button mat-button (click)="uploadFileToActivity()">upload</button>
-        </div>
-        <div>
-          <div *ngIf="isDetecting">Detecting...</div>
-          <br/> {{detecteReceipt | json}}
-          <br/> {{detectedMessage}}
-          <br/> {{detectedText}}
-        </div>
-        <div>
-          <app-image-drop></app-image-drop>
+          <button mat-button (click)="uploadFileToActivity()">detect</button>
         </div>
       </div>
 
