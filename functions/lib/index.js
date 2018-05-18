@@ -80,8 +80,7 @@ function detectFile(buffer) {
     return client
         .documentTextDetection({ image: image })
         .then(results => {
-        const detections = results[0].fullTextAnnotation;
-        return detections;
+        return results[0].fullTextAnnotation;
     })
         .catch(err => {
         console.error('ERROR:', err);
