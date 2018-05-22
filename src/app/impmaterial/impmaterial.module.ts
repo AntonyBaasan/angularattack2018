@@ -7,6 +7,7 @@ import {
   MatGridListModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatListModule,
 } from '@angular/material';
 
 const modules = [
@@ -17,6 +18,7 @@ const modules = [
   MatGridListModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatListModule,
 ];
 
 @NgModule({
@@ -24,4 +26,4 @@ const modules = [
   exports: [...modules],
   declarations: []
 })
-export class ImpmaterialModule {}
+export class ImpmaterialModule { }
