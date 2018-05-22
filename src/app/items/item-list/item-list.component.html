@@ -1,30 +1,52 @@
-<div>
-  <div *ngFor="let r of receipts$ | async">
-    <a>{{r.title}}</a> |
-    <a>{{r.description}}</a> |
-    <a>{{r.date}}</a> |
-    <a>{{r.total}}</a> |
-    <button (click)="edit(r)">edit</button>
-    <button (click)="remove(r)">remove</button>
+<div class="flex-container">
+  <div class="flex-item">
+    <button mat-raised-button color="primary" (click)="addNew()">New</button>
+  </div>
+  <div class="flex-item">
+    <button mat-raised-button color="primary" (click)="edit()" [disabled]="!isSingleSelect()">Edit</button>
+  </div>
+  <div class="flex-item">
+    <button mat-raised-button color="warn" (click)="remove()" [disabled]="!hasAnySelect()">Delete</button>
   </div>
 </div>
 
-<mat-list>
-  <mat-list-item *ngFor="let r of receipts$ | async">
-    <div mat-line>
-      <mat-grid-list cols="4" rowHeight="30px">
-        <mat-grid-tile colspan="3" rowspan="1" class="title">
-          {{r.title}}
-        </mat-grid-tile>
-        <mat-grid-tile colspan="1" rowspan="2">
-          {{r.total}}
-        </mat-grid-tile>
-        <mat-grid-tile colspan="3" rowspan="1">
-          {{r.date | date}}
-        </mat-grid-tile>
-      </mat-grid-list>
-    </div>
-  </mat-list-item>
-</mat-list>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-<button (click)="addNew()">New</button>
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef> Date </th>
+    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef> Title </th>
+    <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef> Description </th>
+    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="total">
+    <th mat-header-cell *matHeaderCellDef> Total </th>
+    <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+  </tr>
+</table>

@@ -8,6 +8,8 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatListModule,
+  MatTableModule,
+  MatCheckboxModule,
 } from '@angular/material';
 
 const modules = [
@@ -19,6 +21,8 @@ const modules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatListModule,
+  MatTableModule,
+  MatCheckboxModule,
 ];
 
 @NgModule({

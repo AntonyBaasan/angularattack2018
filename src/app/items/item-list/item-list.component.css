@@ -1,5 +1,26 @@
- mat-list .title .mat-figure{
-    justify-content: left !important;
-    background-color: DodgerBlue;
-  }
+.list-item {
+  background-color: DodgerBlue;
+  margin-bottom: 5px;
+  height: 50px;
+}
 
+.flex-container {
+  display: flex;
+}
+
+.flex-item {
+  margin-left: 5px;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}

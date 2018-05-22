@@ -8,6 +8,8 @@ import { Receipt } from '../../model/receipt.model';
 import { ImagedetectorService } from '../../services/imagedetector.service';
 import { ReceiptService } from '../../services/receipt.service';
 import { ItemEditComponent } from '../item-edit/item-edit.component';
+import { MatTableDataSource } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-item-list',
@@ -17,6 +19,9 @@ import { ItemEditComponent } from '../item-edit/item-edit.component';
 export class ItemListComponent implements OnInit {
   receipts$: Observable<Receipt[]>;
   targetReceipt: Receipt;
+  displayedColumns = ['select', 'date', 'title', 'description', 'total'];
+  dataSource = new MatTableDataSource<Receipt>();
+  selection = new SelectionModel<Receipt>(true, []);
 
   constructor(
     private receiptService: ReceiptService,
@@ -25,6 +30,21 @@ export class ItemListComponent implements OnInit {
 
   ngOnInit() {
     this.receipts$ = this.receiptService.getReceipts();
+    this.receipts$.subscribe(item => {
+      this.dataSource.data = item;
+    });
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  masterToggle() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   addNew() {
@@ -32,8 +52,12 @@ export class ItemListComponent implements OnInit {
     this.showDialog(this.targetReceipt);
   }
 
-  edit(receipt: Receipt) {
-    this.targetReceipt = receipt;
+  edit() {
+    if (!this.isSingleSelect()) {
+      return;
+    }
+
+    this.targetReceipt = this.selection.selected[0];
     this.showDialog(this.targetReceipt);
   }
 
@@ -48,7 +72,20 @@ export class ItemListComponent implements OnInit {
     });
   }
 
-  remove(receipt: Receipt) {
-    this.receiptService.remove(receipt);
+  remove() {
+    if (!this.hasAnySelect()) {
+      return;
+    }
+
+    this.receiptService.removeMany(this.selection.selected);
+    _.forEach(this.selection.selected, s => this.selection.deselect(s));
+  }
+
+  isSingleSelect() {
+    return this.selection.selected.length === 1;
+  }
+
+  hasAnySelect() {
+    return this.selection.selected.length > 0;
   }
 }

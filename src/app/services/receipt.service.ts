@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import {
   AngularFireDatabase,
@@ -48,5 +49,11 @@ export class ReceiptService {
     if (receipt.key) {
       this.receipts$.remove(receipt.key);
     }
+  }
+
+  removeMany(receipts: Receipt[]) {
+    _.forEach(receipts, r => {
+      this.remove(r);
+    });
   }
 }
