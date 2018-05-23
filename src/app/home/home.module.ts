@@ -4,13 +4,13 @@ import {MatButtonModule} from '@angular/material';
 
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
-import { ImpmaterialModule } from '../impmaterial/impmaterial.module';
+import { ImportMaterialModule } from '../importmaterial/importmaterial.module';
 
 @NgModule({
   imports: [
     CommonModule,
     HomeRoutingModule,
-    ImpmaterialModule
+    ImportMaterialModule
   ],
   declarations: [HomeComponent]
 })
