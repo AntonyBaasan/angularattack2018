@@ -14,8 +14,8 @@
   <div *ngIf="isLoadingResults" class="loading-shade">
     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
   </div>
-  <table mat-table [dataSource]="dataSource">
 
+  <table mat-table [dataSource]="dataSource">
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
