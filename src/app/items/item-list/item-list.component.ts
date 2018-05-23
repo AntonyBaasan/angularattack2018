@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { isDevMode } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatPaginator } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { TextutilsService } from '../../services/textutils.service';
 import { Receipt } from '../../model/receipt.model';
@@ -17,6 +17,7 @@ import { SelectionModel } from '@angular/cdk/collections';
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   receipts$: Observable<Receipt[]>;
   targetReceipt: Receipt;
   displayedColumns = ['select', 'date', 'title', 'description', 'total'];
@@ -29,6 +30,7 @@ export class ItemListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.dataSource.paginator = this.paginator;
     this.receipts$ = this.receiptService.getReceipts();
     this.receipts$.subscribe(item => {
       this.dataSource.data = item;

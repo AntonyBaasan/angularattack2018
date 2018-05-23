@@ -10,6 +10,7 @@ import {
   MatListModule,
   MatTableModule,
   MatCheckboxModule,
+  MatPaginatorModule,
 } from '@angular/material';
 
 const modules = [
@@ -23,6 +24,7 @@ const modules = [
   MatListModule,
   MatTableModule,
   MatCheckboxModule,
+  MatPaginatorModule,
 ];
 
 @NgModule({
