@@ -24,3 +24,7 @@ table {
 td, th {
   width: 25%;
 }
+
+.mat-row:hover {
+  background-color:  #f2f2f2;
+}
