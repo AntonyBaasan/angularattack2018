@@ -11,6 +11,7 @@ import {
   MatTableModule,
   MatCheckboxModule,
   MatPaginatorModule,
+  MatProgressSpinnerModule,
 } from '@angular/material';
 
 const modules = [
@@ -25,6 +26,7 @@ const modules = [
   MatTableModule,
   MatCheckboxModule,
   MatPaginatorModule,
+  MatProgressSpinnerModule,
 ];
 
 @NgModule({

@@ -23,6 +23,7 @@ export class ItemListComponent implements OnInit {
   displayedColumns = ['select', 'date', 'title', 'description', 'total'];
   dataSource = new MatTableDataSource<Receipt>();
   selection = new SelectionModel<Receipt>(true, []);
+  isLoadingResults = false;
 
   constructor(
     private receiptService: ReceiptService,
@@ -31,9 +32,12 @@ export class ItemListComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
+
+    this.isLoadingResults = true;
     this.receipts$ = this.receiptService.getReceipts();
     this.receipts$.subscribe(item => {
       this.dataSource.data = item;
+      this.isLoadingResults = false;
     });
   }
 
