@@ -26,7 +26,7 @@ export class ItemListComponent implements OnInit {
   constructor(
     private receiptService: ReceiptService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.receipts$ = this.receiptService.getReceipts();
@@ -56,8 +56,11 @@ export class ItemListComponent implements OnInit {
     if (!this.isSingleSelect()) {
       return;
     }
+    this.editReceipt(this.selection.selected[0]);
+  }
 
-    this.targetReceipt = this.selection.selected[0];
+  editReceipt(receipt: Receipt) {
+    this.targetReceipt = receipt;
     this.showDialog(this.targetReceipt);
   }
 
