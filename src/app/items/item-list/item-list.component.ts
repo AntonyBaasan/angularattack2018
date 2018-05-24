@@ -36,7 +36,7 @@ export class ItemListComponent implements OnInit {
     this.isLoadingResults = true;
     this.receipts$ = this.receiptService.getReceipts();
     this.receipts$.subscribe(item => {
-      this.dataSource.data = item;
+      this.dataSource.data = item.reverse();
       this.isLoadingResults = false;
     });
   }
