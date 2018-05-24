@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { isDevMode } from '@angular/core';
-import { MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { TextutilsService } from '../../services/textutils.service';
 import { Receipt } from '../../model/receipt.model';
@@ -18,6 +18,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 export class ItemListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   receipts$: Observable<Receipt[]>;
   targetReceipt: Receipt;
   displayedColumns = ['select', 'date', 'title', 'description', 'total'];
@@ -32,6 +33,7 @@ export class ItemListComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
 
     this.isLoadingResults = true;
     this.receipts$ = this.receiptService.getReceipts();
