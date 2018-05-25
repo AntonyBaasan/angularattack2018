@@ -25,6 +25,7 @@
     "@angular/router": "^6.0.0",
     "angularfire2": "^5.0.0-rc.10",
     "core-js": "^2.5.4",
+    "firebase": "^5.0.4",
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.10",
     "rxjs": "^6.0.0",
