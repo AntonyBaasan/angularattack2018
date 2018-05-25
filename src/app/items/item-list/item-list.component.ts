@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { isDevMode } from '@angular/core';
 import { MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -10,6 +10,7 @@ import { ReceiptService } from '../../services/receipt.service';
 import { ItemEditComponent } from '../item-edit/item-edit.component';
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
+import { ModelChangeAction } from '../../model/model-change-action.model';
 
 @Component({
   selector: 'app-item-list',
@@ -19,7 +20,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 export class ItemListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  receipts$: Observable<Receipt[]>;
+  receipts$: Observable<ModelChangeAction<Receipt>[]>;
   targetReceipt: Receipt;
   displayedColumns = ['select', 'date', 'title', 'description', 'total'];
   dataSource = new MatTableDataSource<Receipt>();
@@ -28,7 +29,7 @@ export class ItemListComponent implements OnInit {
 
   constructor(
     private receiptService: ReceiptService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -37,10 +38,23 @@ export class ItemListComponent implements OnInit {
 
     this.isLoadingResults = true;
     this.receipts$ = this.receiptService.getReceipts();
-    this.receipts$.subscribe(item => {
-      this.dataSource.data = item.reverse();
+    this.receipts$.subscribe(actions => {
+      actions.forEach(this.udpateDataSource.bind(this));
       this.isLoadingResults = false;
     });
+  }
+
+  private udpateDataSource(modelChangeAction: ModelChangeAction<Receipt>) {
+    const data = this.dataSource.data;
+    if (modelChangeAction.type === 'added') {
+      data.unshift(modelChangeAction.model);
+    } else if (modelChangeAction.type === 'removed') {
+      _.remove(data, (d) => d.key === modelChangeAction.model.key);
+    } else if (modelChangeAction.type === 'modified') {
+      const index = _.findIndex(data, { 'key': modelChangeAction.model.key });
+      data.splice(index, 1, modelChangeAction.model);
+    }
+    this.dataSource.data = data;
   }
 
   isAllSelected() {

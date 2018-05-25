@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Receipt } from '../model/receipt.model';
 import { map } from 'rxjs/operators';
+import { ModelChangeAction } from '../model/model-change-action.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,14 +24,18 @@ export class ReceiptService {
       total: 0
     };
   }
-  getReceipts(): Observable<Receipt[]> {
+  getReceipts(): Observable<ModelChangeAction<Receipt>[]> {
     // return this.receipts$.snapshotChanges();
     return this.receipts$.snapshotChanges().pipe(
       map(actions => actions.map(a => {
+        // a.type
         console.log(a);
         return {
-          key: a.payload.doc.id,
-          ...a.payload.doc.data(),
+          type: a.type,
+          model: {
+            key: a.payload.doc.id,
+            ...a.payload.doc.data(),
+          }
         };
       }))
 
