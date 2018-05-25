@@ -29,7 +29,7 @@ export class ReceiptService {
     return this.receipts$.stateChanges().pipe(
       map(actions => actions.map(a => {
         // a.type
-        console.log(a);
+        // console.log(a);
         return {
           type: a.type,
           model: {

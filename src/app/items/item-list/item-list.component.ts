@@ -29,8 +29,8 @@ export class ItemListComponent implements OnInit {
 
   constructor(
     private receiptService: ReceiptService,
-    public dialog: MatDialog,
-  ) { }
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
@@ -46,16 +46,22 @@ export class ItemListComponent implements OnInit {
 
   private udpateDataSource(modelChangeAction: ModelChangeAction<Receipt>) {
     const data = this.dataSource.data;
+    console.log(modelChangeAction);
     if (modelChangeAction.type === 'added') {
       data.unshift(modelChangeAction.model);
     } else if (modelChangeAction.type === 'removed') {
-      _.remove(data, (d) => d.key === modelChangeAction.model.key);
+      this.deselectByKey(modelChangeAction.model.key);
+      _.remove(data, d => d.key === modelChangeAction.model.key);
     } else if (modelChangeAction.type === 'modified') {
-      const index = _.findIndex(data, { 'key': modelChangeAction.model.key });
+      const index = _.findIndex(data, { key: modelChangeAction.model.key });
       data.splice(index, 1, modelChangeAction.model);
-      _.remove(this.selection, s => s.key === modelChangeAction.model.key);
     }
     this.dataSource.data = data;
+  }
+
+  deselectByKey(key: string) {
+    const targetDeselect = _.find(this.selection.selected, 'key', key);
+    this.selection.deselect(targetDeselect);
   }
 
   isAllSelected() {
