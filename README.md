@@ -1,3 +1,3 @@
-AngularAttack 2018 etnry project.
+AngularAttack 2018 project.
 
 Simple receipt analyser.
