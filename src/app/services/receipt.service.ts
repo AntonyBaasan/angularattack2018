@@ -1,19 +1,19 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import {
-  AngularFireDatabase,
-  AngularFireObject,
-  AngularFireList
-} from 'angularfire2/database';
+  AngularFirestore,
+  AngularFirestoreCollection,
+  DocumentChangeAction,
+} from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { Receipt } from '../model/receipt.model';
-import { map } from '@firebase/util';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReceiptService {
-  public receipts$: AngularFireList<Receipt>;
+  public receipts$: AngularFirestoreCollection<Receipt>;
 
   getNewReceiptTemplate(): Receipt {
     return {
@@ -24,31 +24,41 @@ export class ReceiptService {
     };
   }
   getReceipts(): Observable<Receipt[]> {
-    return this.receipts$.snapshotChanges().map(actions => {
-      return actions.map(snap => {
-        return { key: snap.key, ...snap.payload.val() } as Receipt;
-      });
-    });
+    // return this.receipts$.snapshotChanges();
+    return this.receipts$.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        console.log(a);
+        return {
+          key: a.payload.doc.id,
+          ...a.payload.doc.data(),
+        };
+      }))
+
+      // actions => {
+      // return actions.map(snap => {
+      //   return { key: snap.payload.doc.id, ...snap.payload.doc.data } as Receipt;
+      // });
+    );
   }
 
-  constructor(private af: AngularFireDatabase) {
-    this.receipts$ = this.af.list('receipts');
+  constructor(private af: AngularFirestore) {
+    this.receipts$ = this.af.collection<Receipt>('receipts');
   }
 
   // this is destructive (recrates an object)
   save(receipt: Receipt) {
-    if (receipt.key) {
-      this.receipts$.update(receipt.key, receipt);
-      // this.receipts$.set(receipt.key, receipt);
-    } else {
-      return this.receipts$.push(receipt);
-    }
+    // if (receipt.key) {
+    //   this.receipts$.update(receipt.key, receipt);
+    //   // this.receipts$.set(receipt.key, receipt);
+    // } else {
+    //   return this.receipts$.push(receipt);
+    // }
   }
 
   remove(receipt: Receipt) {
-    if (receipt.key) {
-      this.receipts$.remove(receipt.key);
-    }
+    // if (receipt.key) {
+    //   this.receipts$.remove(receipt.key);
+    // }
   }
 
   removeMany(receipts: Receipt[]) {
