@@ -15,10 +15,10 @@ before_script:
 - sudo chmod 4755 /opt/google/chrome/chrome-sandbox
 branches:
   only: master
-# cache:
-#   directories: node_modules
+cache:
+  directories: node_modules
 script:
-- npm run test
+# - npm run test
 - npm run build
 before_deploy:
 - npm install -g tslint
