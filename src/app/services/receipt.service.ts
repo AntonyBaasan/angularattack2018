@@ -26,7 +26,7 @@ export class ReceiptService {
   }
   getReceipts(): Observable<ModelChangeAction<Receipt>[]> {
     // return this.receipts$.snapshotChanges();
-    return this.receipts$.snapshotChanges().pipe(
+    return this.receipts$.stateChanges().pipe(
       map(actions => actions.map(a => {
         // a.type
         console.log(a);
@@ -38,11 +38,6 @@ export class ReceiptService {
           }
         };
       }))
-
-      // actions => {
-      // return actions.map(snap => {
-      //   return { key: snap.payload.doc.id, ...snap.payload.doc.data } as Receipt;
-      // });
     );
   }
 
@@ -52,18 +47,17 @@ export class ReceiptService {
 
   // this is destructive (recrates an object)
   save(receipt: Receipt) {
-    // if (receipt.key) {
-    //   this.receipts$.update(receipt.key, receipt);
-    //   // this.receipts$.set(receipt.key, receipt);
-    // } else {
-    //   return this.receipts$.push(receipt);
-    // }
+    if (receipt.key) {
+      this.receipts$.doc(receipt.key).update(receipt);
+    } else {
+      return this.receipts$.add(receipt);
+    }
   }
 
   remove(receipt: Receipt) {
-    // if (receipt.key) {
-    //   this.receipts$.remove(receipt.key);
-    // }
+    if (receipt.key) {
+      this.receipts$.doc(receipt.key).delete();
+    }
   }
 
   removeMany(receipts: Receipt[]) {

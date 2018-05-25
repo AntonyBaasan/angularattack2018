@@ -53,6 +53,7 @@ export class ItemListComponent implements OnInit {
     } else if (modelChangeAction.type === 'modified') {
       const index = _.findIndex(data, { 'key': modelChangeAction.model.key });
       data.splice(index, 1, modelChangeAction.model);
+      _.remove(this.selection, s => s.key === modelChangeAction.model.key);
     }
     this.dataSource.data = data;
   }
@@ -103,7 +104,6 @@ export class ItemListComponent implements OnInit {
     }
 
     this.receiptService.removeMany(this.selection.selected);
-    _.forEach(this.selection.selected, s => this.selection.deselect(s));
   }
 
   isSingleSelect() {
