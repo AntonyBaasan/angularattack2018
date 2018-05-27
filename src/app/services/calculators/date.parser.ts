@@ -14,7 +14,7 @@ export class DateParser {
     _.forEach(regexFormats, reg => {
       const dateAsStr = UtilsCalculator.getStringByRegex(text, reg, 0);
       if (dateAsStr) {
-        console.log('Date found:', dateAsStr);
+        // console.log('Date found:', dateAsStr);
         result.push(new Date(dateAsStr));
       }
     });
