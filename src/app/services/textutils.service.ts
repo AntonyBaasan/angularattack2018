@@ -34,7 +34,7 @@ export class TextutilsService {
         receipt.total.push(t);
       }
 
-      const d = DateParser.getGetDate(textLines, l, index);
+      const d = DateParser.getDate(textLines, l, index);
       if (d) {
         receipt.date.push(d);
       }

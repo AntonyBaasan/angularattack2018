@@ -9,7 +9,7 @@ const regexFormats = [
 ];
 
 export class DateParser {
-  static getGetDate(allLines: string[], text: string, index: number): Date {
+  static getDate(allLines: string[], text: string, index: number): Date {
     const result: Date[] = [];
     _.forEach(regexFormats, reg => {
       const dateAsStr = UtilsCalculator.getStringByRegex(text, reg, 0);
