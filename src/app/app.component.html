@@ -1,10 +1,9 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Yo {{ title }}!
-  </h1>
-  <button md-button [routerLink]="['']">Home</button>
-  <button md-button [routerLink]="['/items']">Items</button>
+<div class="header">
+  <div style="text-align:center">
+    <button mat-raised-button [routerLink]="['']">Home</button>
+    <button mat-raised-button [routerLink]="['/items']">Items</button>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

@@ -16,6 +16,8 @@ import { ReceiptService } from './services/receipt.service';
 import { SharedModule } from './shared/shared.module';
 import { firebaseConfig } from './config/firebase-config';
 
+import { ImportMaterialModule } from './importmaterial/importmaterial.module';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -27,6 +29,7 @@ import { firebaseConfig } from './config/firebase-config';
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    ImportMaterialModule,
     SharedModule,
     AppRoutingModule,
     HomeModule,
