@@ -1,5 +1,5 @@
 export interface FilterInfo {
-    string?: string;
+    text?: string;
     startDate?: Date;
     endDate?: Date;
     minTotal?: number;

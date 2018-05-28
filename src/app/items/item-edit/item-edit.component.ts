@@ -21,6 +21,7 @@ import {
 import { ImageDropComponent } from '../../shared/image-drop/image-drop.component';
 import { FormControl } from '@angular/forms';
 import { ReceiptDetectionResult } from '../../model/receipt-detection-result.model';
+import { DateUtilsService } from '../../services/date-utils.service';
 
 @Component({
   selector: 'app-item-edit',
@@ -45,6 +46,7 @@ export class ItemEditComponent implements OnInit {
     private receiptService: ReceiptService,
     private imagedetectorService: ImagedetectorService,
     public dialogRef: MatDialogRef<ItemEditComponent>,
+    public dateUtilsService: DateUtilsService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -132,10 +134,6 @@ export class ItemEditComponent implements OnInit {
   }
 
   convertDateToForm(date: Date) {
-    if (date) {
-      return new FormControl(date);
-    }
-
-    return new FormControl('');
+   return this.dateUtilsService.convertDateToForm(date);
   }
 }
