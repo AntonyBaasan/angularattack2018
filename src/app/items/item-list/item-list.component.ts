@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
 import { isDevMode } from '@angular/core';
 import { MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -11,6 +11,7 @@ import { ItemEditComponent } from '../item-edit/item-edit.component';
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ModelChangeAction } from '../../model/model-change-action.model';
+import { FilterInfo } from '../../model/filter-info.model';
 
 @Component({
   selector: 'app-item-list',
@@ -18,6 +19,7 @@ import { ModelChangeAction } from '../../model/model-change-action.model';
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
+  @Input() filterInfo: FilterInfo;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   receipts$: Observable<ModelChangeAction<Receipt>[]>;
