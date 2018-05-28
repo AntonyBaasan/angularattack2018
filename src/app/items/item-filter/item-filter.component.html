@@ -1,55 +1,58 @@
-<mat-form-field class="example-full-width">
-  <input matInput placeholder="Type here" value={{filterInfo?.text}} (input)="filterInfo.text=$event.target.value">
-</mat-form-field>
+<div class="filter-view">
+  <mat-form-field class="full-width">
+    <input matInput class="full-width" placeholder="Search text" value={{filterInfo?.text}} (input)="filterInfo.text=$event.target.value">
+  </mat-form-field>
 
+  <mat-accordion multi="true">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Date
+        </mat-panel-title>
+        <mat-panel-description>
+          filters by date range
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-<mat-accordion multi="true">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Date
-      </mat-panel-title>
-      <mat-panel-description>
-        filters by date range
-      </mat-panel-description>
-    </mat-expansion-panel-header>
+      <mat-form-field class="after-margin">
+        <input matInput [matDatepicker]="pickerStart" placeholder="Start Date" (dateChange)="startDateChanged('change', $event)"
+          [formControl]="convertDateToForm(filterInfo.startDate)">
+        <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+        <mat-datepicker #pickerStart touchUi="true"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="after-margin">
+        <input matInput [matDatepicker]="pickerEnd" placeholder="End Date" (dateChange)="endDateChanged('change', $event)" [formControl]="convertDateToForm(filterInfo.endDate)">
+        <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+        <mat-datepicker #pickerEnd touchUi="true"></mat-datepicker>
+      </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [matDatepicker]="pickerStart" placeholder="Start Date" (dateChange)="startDateChanged('change', $event)"
-        [formControl]="convertDateToForm(filterInfo.startDate)">
-      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
-      <mat-datepicker #pickerStart touchUi="true"></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput [matDatepicker]="pickerEnd" placeholder="End Date" (dateChange)="endDateChanged('change', $event)" [formControl]="convertDateToForm(filterInfo.endDate)">
-      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-      <mat-datepicker #pickerEnd touchUi="true"></mat-datepicker>
-    </mat-form-field>
-    <mat-action-row>
-      <button mat-button color="primary" (click)="clearDateFilter()">Clear</button>
-    </mat-action-row>
-  </mat-expansion-panel>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="clearDateFilter()">Clear</button>
+      </mat-action-row>
+    </mat-expansion-panel>
 
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Total
-      </mat-panel-title>
-      <mat-panel-description>
-        Filters by total amount range
-      </mat-panel-description>
-    </mat-expansion-panel-header>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Total
+        </mat-panel-title>
+        <mat-panel-description>
+          Filters by total amount range
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="" value={{filterInfo?.minTotal}} (input)="filterInfo.minTotal=$event.target.value" type="number">
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="" value={{filterInfo?.maxTotal}} (input)="filterInfo.maxTotal=$event.target.value" type="number">
-    </mat-form-field>
-    <mat-action-row>
-      <button mat-button color="primary" (click)="clearTotalFilter()">Clear</button>
-    </mat-action-row>
-  </mat-expansion-panel>
-</mat-accordion>
+      <mat-form-field class="after-margin">
+        <input matInput placeholder="" value={{filterInfo?.minTotal}} (input)="filterInfo.minTotal=$event.target.value" type="number">
+      </mat-form-field>
+      <mat-form-field class="after-margin">
+        <input matInput placeholder="" value={{filterInfo?.maxTotal}} (input)="filterInfo.maxTotal=$event.target.value" type="number">
+      </mat-form-field>
 
-<button mat-raised-button color="warn" (click)="clearAll()">Clear All Filters</button>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="clearTotalFilter()">Clear</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <button mat-raised-button color="warn" (click)="clearAll()">Clear All Filters</button>
+</div>
