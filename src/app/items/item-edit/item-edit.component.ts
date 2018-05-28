@@ -20,6 +20,7 @@ import {
 } from '@angular/material';
 import { ImageDropComponent } from '../../shared/image-drop/image-drop.component';
 import { FormControl } from '@angular/forms';
+import { ReceiptDetectionResult } from '../../model/receipt-detection-result.model';
 
 @Component({
   selector: 'app-item-edit',
@@ -30,6 +31,7 @@ export class ItemEditComponent implements OnInit {
   @ViewChild(ImageDropComponent) imageDropComponentRef: ImageDropComponent;
   @ViewChild(MatDatepicker) picker: MatDatepicker<Date>;
   receipt: Receipt;
+  receiptDetectionResult: ReceiptDetectionResult;
   title = 'New';
 
   fileToUpload: File = null;
@@ -44,7 +46,7 @@ export class ItemEditComponent implements OnInit {
     private imagedetectorService: ImagedetectorService,
     public dialogRef: MatDialogRef<ItemEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.receipt = this.data.receipt;
@@ -69,7 +71,8 @@ export class ItemEditComponent implements OnInit {
         console.log(data);
         this.detectedMessage = data.message;
         this.detectedText = data.result.text;
-        this.receipt = this.recognizeReceipt(data.result.text);
+        this.receiptDetectionResult = this.recognizeReceipt(data.result.text);
+        this.receipt = this.convertDetectionToReceipt(this.receipt, this.receiptDetectionResult);
       },
       error => {
         console.log(error);
@@ -82,6 +85,20 @@ export class ItemEditComponent implements OnInit {
     );
   }
 
+  convertDetectionToReceipt(receipt: Receipt, rdr: ReceiptDetectionResult): Receipt {
+    if (rdr.title[0]) {
+      receipt.title = rdr.title[0];
+    }
+    if (rdr.date[0]) {
+      receipt.date = rdr.date[0];
+    }
+    if (rdr.total[0]) {
+      receipt.total = rdr.total[0];
+    }
+
+    return receipt;
+  }
+
   executeDetection(file: File) {
     // if (isDevMode()) {
     //   return this.imagedetectorService.detectFileFake(file);
@@ -90,7 +107,7 @@ export class ItemEditComponent implements OnInit {
     return this.imagedetectorService.detectFile(file);
   }
 
-  recognizeReceipt(text: string): Receipt {
+  recognizeReceipt(text: string): ReceiptDetectionResult {
     const result = this.textUtilsService.convertToLines(text);
     const receipt = this.textUtilsService.stringLinesToReceipt(result);
     return receipt;

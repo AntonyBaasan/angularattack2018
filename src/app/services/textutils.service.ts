@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { Receipt } from '../model/receipt.model';
 import { TotalParser } from './calculators/total.parser';
 import { DateParser } from './calculators/date.parser';
+import { ReceiptDetectionResult } from '../model/receipt-detection-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +10,9 @@ import { DateParser } from './calculators/date.parser';
 export class TextutilsService {
   constructor() {}
 
-  public convertToLines(text: string): string[] {
+  public convertToLines(fullText: string): string[] {
     // tslint:disable-next-line:quotemark
-    const r = _.filter(text.split('\n'), (t: string) => {
+    const r = _.filter(fullText.split('\n'), (t: string) => {
       const tr = t.trim();
       if (t === '') {
         return false;
@@ -23,17 +23,20 @@ export class TextutilsService {
     return _.map(r, s => s.toLowerCase());
   }
 
-  public stringLinesToReceipt(textLines: string[]): Receipt {
-    const receipt: Receipt = { total: 0, date: null };
-    receipt.title = textLines[0];
+  public stringLinesToReceipt(textLines: string[]): ReceiptDetectionResult {
+    const receipt: ReceiptDetectionResult = { total: [], date: [], title: [] };
+    receipt.title.push(textLines[0]);
 
     _.forEach(textLines, (l, index) => {
       // console.log(l);
-      if (!receipt.total) {
-        receipt.total = TotalParser.getTotal(textLines, l, index);
+      const t = TotalParser.getTotal(textLines, l, index);
+      if (t) {
+        receipt.total.push(t);
       }
-      if (!receipt.date) {
-        receipt.date = DateParser.getGetDate(textLines, l, index);
+
+      const d = DateParser.getGetDate(textLines, l, index);
+      if (d) {
+        receipt.date.push(d);
       }
     });
 
