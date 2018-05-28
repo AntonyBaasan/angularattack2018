@@ -14,6 +14,7 @@ import {
   MatProgressSpinnerModule,
   MatSortModule,
   MatExpansionModule,
+  MatIconModule,
 } from '@angular/material';
 
 const modules = [
@@ -31,6 +32,7 @@ const modules = [
   MatProgressSpinnerModule,
   MatSortModule,
   MatExpansionModule,
+  MatIconModule,
 ];
 
 @NgModule({

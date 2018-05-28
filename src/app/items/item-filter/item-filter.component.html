@@ -7,6 +7,7 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
+          <mat-icon>date_range</mat-icon>
           Date
         </mat-panel-title>
         <mat-panel-description>
@@ -27,13 +28,17 @@
       </mat-form-field>
 
       <mat-action-row>
-        <button mat-button color="primary" (click)="clearDateFilter()">Clear</button>
+        <button mat-raised-button color="warn" (click)="clearDateFilter()">
+          <mat-icon>clear</mat-icon>
+          Clear
+        </button>
       </mat-action-row>
     </mat-expansion-panel>
 
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
+          <mat-icon>ballot</mat-icon>
           Total
         </mat-panel-title>
         <mat-panel-description>
@@ -49,10 +54,16 @@
       </mat-form-field>
 
       <mat-action-row>
-        <button mat-button color="primary" (click)="clearTotalFilter()">Clear</button>
+        <button mat-raised-button color="warn" (click)="clearTotalFilter()">
+          <mat-icon>clear</mat-icon>
+          Clear
+        </button>
       </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>
 
-  <button mat-raised-button color="warn" (click)="clearAll()">Clear All Filters</button>
+  <button mat-raised-button color="warn" (click)="clearAll()">
+    <mat-icon>clear_all</mat-icon>
+    Clear All Filters
+  </button>
 </div>
