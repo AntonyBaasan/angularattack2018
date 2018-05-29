@@ -1,5 +1,11 @@
 import * as _ from 'lodash';
-import { Component, OnInit, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+  Input
+} from '@angular/core';
 import { isDevMode } from '@angular/core';
 import { MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -12,6 +18,7 @@ import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ModelChangeAction } from '../../model/model-change-action.model';
 import { FilterInfo } from '../../model/filter-info.model';
+import { PageInfo } from '../../model/page-info.model';
 
 @Component({
   selector: 'app-item-list',
@@ -20,7 +27,6 @@ import { FilterInfo } from '../../model/filter-info.model';
 })
 export class ItemListComponent implements OnInit {
   @Input() filterInfo: FilterInfo;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   receipts$: Observable<ModelChangeAction<Receipt>[]>;
   targetReceipt: Receipt;
@@ -35,11 +41,27 @@ export class ItemListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
+    this.updateReceipts({ page: 0, pageSize: 3 });
+    // this.updateReceipts({ page: 0, pageSize: 30 });
+  }
+
+  private updateReceipts(pageInfo: PageInfo) {
     this.isLoadingResults = true;
-    this.receipts$ = this.receiptService.getReceipts();
+    this.receipts$ = this.receiptService.getReceipts(pageInfo);
+    this.receipts$.subscribe(actions => {
+      actions.forEach(this.udpateDataSource.bind(this));
+      this.isLoadingResults = false;
+    });
+  }
+
+  public loadMore() {
+    const pageInfo = { page: 1, pageSize: 3 };
+    const lastReceipt = this.dataSource.data[this.dataSource.data.length - 1];
+
+    this.isLoadingResults = true;
+    this.receipts$ = this.receiptService.loadMore(lastReceipt, pageInfo);
     this.receipts$.subscribe(actions => {
       actions.forEach(this.udpateDataSource.bind(this));
       this.isLoadingResults = false;
@@ -50,7 +72,10 @@ export class ItemListComponent implements OnInit {
     const data = this.dataSource.data;
     console.log(modelChangeAction);
     if (modelChangeAction.type === 'added') {
-      data.unshift(modelChangeAction.model);
+      const index = _.findIndex(data, { key: modelChangeAction.model.key });
+      if (index === -1) {
+        data.push(modelChangeAction.model);
+      }
     } else if (modelChangeAction.type === 'removed') {
       this.deselectByKey(modelChangeAction.model.key);
       _.remove(data, d => d.key === modelChangeAction.model.key);

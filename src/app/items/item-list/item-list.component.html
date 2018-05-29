@@ -8,6 +8,9 @@
   <div class="flex-item">
     <button mat-raised-button color="warn" (click)="remove()" [disabled]="!hasAnySelect()">Delete</button>
   </div>
+  <!-- <div class="flex-item">
+    <button mat-raised-button color="warn" (click)="loadMore()">Load More</button>
+  </div> -->
 </div>
 
 <div class="mat-elevation-z8">
@@ -54,5 +57,4 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editReceipt (row)">
     </tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>

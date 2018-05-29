@@ -1,2 +1,6 @@
-<app-item-filter></app-item-filter>
-<app-item-list></app-item-list>
+<div id="item-holder" (scroll)="onTableScroll($event)">
+    <div id="div2">
+        <app-item-filter></app-item-filter>
+        <app-item-list #itemList></app-item-list>
+    </div>
+</div>
