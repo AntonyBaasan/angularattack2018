@@ -7,7 +7,13 @@ import {
   Input,
   isDevMode
 } from '@angular/core';
-import { MatDialog, MatPaginator, MatSort, MatDatepickerInputEvent } from '@angular/material';
+import {
+  MatDialog,
+  MatPaginator,
+  MatSort,
+  MatDatepickerInputEvent
+} from '@angular/material';
+import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { TextutilsService } from '../../services/textutils.service';
 import { Receipt } from '../../model/receipt.model';
@@ -32,7 +38,8 @@ export class ItemFilterComponent implements OnInit {
   constructor(
     private receiptService: ReceiptService,
     public dialog: MatDialog,
-    public dateUtilsService: DateUtilsService
+    public dateUtilsService: DateUtilsService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -47,10 +54,32 @@ export class ItemFilterComponent implements OnInit {
     this.filterInfo.startDate = null;
     this.filterInfo.endDate = null;
   }
-  
+
+  clearTextFilter() {
+    this.filterInfo.text = null;
+  }
+
   clearTotalFilter() {
     this.filterInfo.minTotal = null;
     this.filterInfo.maxTotal = null;
+  }
+
+  public dateFiltersToString() {
+    if (!this.filterInfo.startDate && !this.filterInfo.endDate) {
+      return 'filters by date range';
+    }
+
+    let resultString = '';
+    if (this.filterInfo.startDate) {
+      resultString +=
+        'from ' + this.datePipe.transform(this.filterInfo.startDate);
+    }
+    if (this.filterInfo.endDate) {
+      resultString +=
+        ' until ' + this.datePipe.transform(this.filterInfo.endDate);
+    }
+
+    return resultString;
   }
 
   startDateChanged(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -62,6 +91,6 @@ export class ItemFilterComponent implements OnInit {
   }
 
   convertDateToForm(date: Date) {
-   return this.dateUtilsService.convertDateToForm(date);
+    return this.dateUtilsService.convertDateToForm(date);
   }
 }

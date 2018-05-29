@@ -1,17 +1,37 @@
 <div class="filter-view">
-  <mat-form-field class="full-width">
-    <input matInput class="full-width" placeholder="Search text" value={{filterInfo?.text}} (input)="filterInfo.text=$event.target.value">
-  </mat-form-field>
 
-  <mat-accordion multi="true">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>search</mat-icon>
+          By text
+        </mat-panel-title>
+        <mat-panel-description>
+          {{filterInfo.text}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-form-field class="full-width">
+        <input matInput class="full-width" placeholder="Search text" value={{filterInfo?.text}} (input)="filterInfo.text=$event.target.value">
+      </mat-form-field>
+
+      <mat-action-row>
+        <button mat-raised-button color="warn" (click)="clearTextFilter()">
+          <mat-icon>clear</mat-icon>
+          Clear
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-icon>date_range</mat-icon>
-          Date
+          Date range
         </mat-panel-title>
         <mat-panel-description>
-          filters by date range
+          {{dateFiltersToString()}}
         </mat-panel-description>
       </mat-expansion-panel-header>
 
@@ -35,7 +55,7 @@
       </mat-action-row>
     </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <!-- <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-icon>ballot</mat-icon>
@@ -59,11 +79,11 @@
           Clear
         </button>
       </mat-action-row>
-    </mat-expansion-panel>
+    </mat-expansion-panel> -->
   </mat-accordion>
 
-  <button mat-raised-button color="warn" (click)="clearAll()">
+  <!-- <button mat-raised-button color="warn" (click)="clearAll()">
     <mat-icon>clear_all</mat-icon>
     Clear All Filters
-  </button>
+  </button> -->
 </div>

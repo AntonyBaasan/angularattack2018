@@ -17,6 +17,7 @@ import { SharedModule } from './shared/shared.module';
 import { firebaseConfig } from './config/firebase-config';
 
 import { ImportMaterialModule } from './importmaterial/importmaterial.module';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,7 +36,7 @@ import { ImportMaterialModule } from './importmaterial/importmaterial.module';
     HomeModule,
     ItemsModule,
   ],
-  providers: [ReceiptService],
+  providers: [ReceiptService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
