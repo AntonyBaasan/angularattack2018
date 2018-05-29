@@ -34,6 +34,7 @@ export class ItemListComponent implements OnInit {
   dataSource = new MatTableDataSource<Receipt>();
   selection = new SelectionModel<Receipt>(true, []);
   isLoadingResults = false;
+  pageLoadSize = 15;
 
   constructor(
     private receiptService: ReceiptService,
@@ -43,7 +44,7 @@ export class ItemListComponent implements OnInit {
   ngOnInit() {
     this.dataSource.sort = this.sort;
 
-    this.updateReceipts({ page: 0, pageSize: 3 });
+    this.updateReceipts({ page: 0, pageSize: this.pageLoadSize });
     // this.updateReceipts({ page: 0, pageSize: 30 });
   }
 
@@ -57,7 +58,7 @@ export class ItemListComponent implements OnInit {
   }
 
   public loadMore() {
-    const pageInfo = { page: 1, pageSize: 3 };
+    const pageInfo = { page: 1, pageSize: this.pageLoadSize };
     const lastReceipt = this.dataSource.data[this.dataSource.data.length - 1];
 
     this.isLoadingResults = true;
