@@ -22,7 +22,7 @@ import { SharedModule } from '../shared/shared.module';
     ItemListComponent,
     ItemsComponent,
     ItemEditComponent,
-    ItemFilterComponent
+    ItemFilterComponent,
   ],
   entryComponents: [
     ItemEditComponent // this fixes material dialog component issue
