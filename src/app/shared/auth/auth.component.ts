@@ -15,16 +15,25 @@ export class AuthComponent implements OnInit {
   loginGoogle() {
     this.afAuth.auth
       .signInWithPopup(new auth.GoogleAuthProvider())
+      .then(result => {
+        const token = result.credential.accessToken;
+      })
       .catch(this.loginErrorHandler.bind(this));
   }
   loginGithub() {
     this.afAuth.auth
       .signInWithPopup(new auth.GithubAuthProvider())
+      .then(result => {
+        const token = result.credential.accessToken;
+      })
       .catch(this.loginErrorHandler.bind(this));
   }
   loginFacebook() {
     this.afAuth.auth
       .signInWithPopup(new auth.FacebookAuthProvider())
+      .then(result => {
+        const token = result.credential.accessToken;
+      })
       .catch(this.loginErrorHandler.bind(this));
   }
   logout() {
@@ -50,9 +59,9 @@ export class AuthComponent implements OnInit {
   }
 
   private loginErrorHandler(error) {
+    // Step 2.
     // An error happened.
     if (error.code === 'auth/account-exists-with-different-credential') {
-      // Step 2.
       // User's email already exists.
       // The pending Google credential.
       const pendingCred = error.credential;
