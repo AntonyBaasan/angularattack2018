@@ -8,6 +8,7 @@ import { auth } from 'firebase/app';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
+  token: String = '';
   constructor(public afAuth: AngularFireAuth) {}
 
   ngOnInit(): void {}
@@ -38,6 +39,11 @@ export class AuthComponent implements OnInit {
   }
   logout() {
     this.afAuth.auth.signOut();
+  }
+  showToken() {
+    this.afAuth.idToken.subscribe(token => {
+      this.token = token;
+    });
   }
 
   private getProvederById(provideId: string) {
