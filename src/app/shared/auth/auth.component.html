@@ -10,6 +10,6 @@
     <button (click)="loginFacebook()">Login with Facebook</button>
   </ng-template>
   <button (click)="showToken()">Get Token</button>
-  <div>{{token}}</div>
+  <input #textbox type="text" [(ngModel)]="token"/>
 
 </div>

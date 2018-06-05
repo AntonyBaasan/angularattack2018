@@ -8,10 +8,10 @@ import { auth } from 'firebase/app';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-  token: String = '';
-  constructor(public afAuth: AngularFireAuth) {}
+  public token: String = '';
+  constructor(public afAuth: AngularFireAuth) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   loginGoogle() {
     this.afAuth.auth
@@ -42,7 +42,9 @@ export class AuthComponent implements OnInit {
   }
   showToken() {
     this.afAuth.idToken.subscribe(token => {
-      this.token = token;
+      setTimeout(() => {
+        this.token = token;
+      }, 0);
     });
   }
 
@@ -102,7 +104,7 @@ export class AuthComponent implements OnInit {
         // Sign in to provider. Note: browsers usually block popup triggered asynchronously,
         // so in real scenario you should ask the user to click on a "continue" button
         // that will trigger the signInWithPopup.
-        fAuth.signInWithPopup(provider).then(function(result) {
+        fAuth.signInWithPopup(provider).then(function (result) {
           // Remember that the user may have signed in with an account that has a different email
           // address than the first one. This can happen as Firebase doesn't control the provider's
           // sign in flow and the user is free to login using whichever account he owns.
@@ -111,7 +113,7 @@ export class AuthComponent implements OnInit {
           // As we have access to the pending credential, we can directly call the link method.
           result.user
             .linkAndRetrieveDataWithCredential(pendingCred)
-            .then(function(usercred) {
+            .then(function (usercred) {
               // Google account successfully linked to the existing Firebase user.
               // goToApp();
             });
