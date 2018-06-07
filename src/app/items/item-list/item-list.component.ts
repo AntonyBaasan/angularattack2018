@@ -19,6 +19,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ModelChangeAction } from '../../model/model-change-action.model';
 import { FilterInfo } from '../../model/filter-info.model';
 import { PageInfo } from '../../model/page-info.model';
+import { Page } from '../../model/page.model';
 
 @Component({
   selector: 'app-item-list',
@@ -51,8 +52,9 @@ export class ItemListComponent implements OnInit {
 
   private updateReceipts(pageInfo: PageInfo) {
     this.isLoadingResults = true;
-    this.receiptService.getReceipts(pageInfo).subscribe(actions => {
-      actions.forEach(this.udpateDataSource.bind(this));
+    this.receiptService.getReceipts(pageInfo).subscribe((page: Page<Receipt>) => {
+      console.log(page);
+      // actions.forEach(this.udpateDataSource.bind(this));
       this.isLoadingResults = false;
     });
   }

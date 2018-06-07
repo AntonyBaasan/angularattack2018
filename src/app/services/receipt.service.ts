@@ -9,6 +9,7 @@ import { PageInfo } from '../model/page-info.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SecurityService } from './security.service';
 import { of } from 'rxjs/internal/observable/of';
+import { Page } from '../model/page.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,15 +32,11 @@ export class ReceiptService {
     };
   }
 
-  getReceipts(pageInfo: PageInfo): Observable<Receipt[]> {
+  getReceipts(pageInfo: PageInfo): Observable<Page<Receipt>> {
     const token: string = this.securityService.getToken();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': token,
-    });
 
     return this.http
-      .get<any>(this.buildUrl(pageInfo), { headers: headers });
+      .get<any>(this.buildUrl(pageInfo));
       // .pipe(catchError(this.handleError('getReceipts', [])));
   }
 
