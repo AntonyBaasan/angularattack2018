@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from 'angularfire2';
@@ -18,6 +18,7 @@ import { firebaseConfig } from './config/firebase-config';
 
 import { ImportMaterialModule } from './importmaterial/importmaterial.module';
 import { DatePipe } from '@angular/common';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,7 +37,11 @@ import { DatePipe } from '@angular/common';
     HomeModule,
     ItemsModule,
   ],
-  providers: [ReceiptService, DatePipe],
+  providers: [ReceiptService, DatePipe, {
+    provide : HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi   : true,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
