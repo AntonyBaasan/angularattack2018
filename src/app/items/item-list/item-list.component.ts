@@ -28,7 +28,6 @@ import { PageInfo } from '../../model/page-info.model';
 export class ItemListComponent implements OnInit {
   @Input() filterInfo: FilterInfo;
   @ViewChild(MatSort) sort: MatSort;
-  receipts$: Observable<ModelChangeAction<Receipt>[]>;
   targetReceipt: Receipt;
   displayedColumns = ['select', 'date', 'title', 'description', 'total'];
   dataSource = new MatTableDataSource<Receipt>();
@@ -44,14 +43,15 @@ export class ItemListComponent implements OnInit {
   ngOnInit() {
     this.dataSource.sort = this.sort;
 
-    this.updateReceipts({ page: 0, pageSize: this.pageLoadSize });
+    setTimeout(() => {
+      this.updateReceipts({ page: 0, pageSize: this.pageLoadSize });
+    }, 3000);
     // this.updateReceipts({ page: 0, pageSize: 30 });
   }
 
   private updateReceipts(pageInfo: PageInfo) {
     this.isLoadingResults = true;
-    this.receipts$ = this.receiptService.getReceipts(pageInfo);
-    this.receipts$.subscribe(actions => {
+    this.receiptService.getReceipts(pageInfo).subscribe(actions => {
       actions.forEach(this.udpateDataSource.bind(this));
       this.isLoadingResults = false;
     });
@@ -62,11 +62,11 @@ export class ItemListComponent implements OnInit {
     const lastReceipt = this.dataSource.data[this.dataSource.data.length - 1];
 
     this.isLoadingResults = true;
-    this.receipts$ = this.receiptService.loadMore(lastReceipt, pageInfo);
-    this.receipts$.subscribe(actions => {
-      actions.forEach(this.udpateDataSource.bind(this));
-      this.isLoadingResults = false;
-    });
+    // this.receiptService.loadMore(lastReceipt, pageInfo);
+    // this.receipts$.subscribe(actions => {
+    //   actions.forEach(this.udpateDataSource.bind(this));
+    //   this.isLoadingResults = false;
+    // });
   }
 
   private udpateDataSource(modelChangeAction: ModelChangeAction<Receipt>) {
