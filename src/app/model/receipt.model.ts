@@ -1,5 +1,5 @@
 export interface Receipt {
-    key?: string;
+    id?: number;
     title?: string;
     description?: string;
     date?: Date;

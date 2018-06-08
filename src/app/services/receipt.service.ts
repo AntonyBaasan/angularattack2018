@@ -21,7 +21,7 @@ export class ReceiptService {
     private af: AngularFirestore,
     private http: HttpClient,
     private securityService: SecurityService
-  ) {}
+  ) { }
 
   getNewReceiptTemplate(): Receipt {
     return {
@@ -37,13 +37,11 @@ export class ReceiptService {
 
     return this.http
       .get<any>(this.buildUrl(pageInfo));
-      // .pipe(catchError(this.handleError('getReceipts', [])));
+    // .pipe(catchError(this.handleError('getReceipts', [])));
   }
 
-  private buildUrl(pageInfo: PageInfo): string {
-    return (
-      this.backendUrl + '?page=' + pageInfo.page + '&size=' + pageInfo.pageSize
-    );
+  private buildUrl(pageInfo): string {
+    return this.backendUrl + '?page=' + pageInfo.page + '&size=' + pageInfo.pageSize;
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
@@ -98,11 +96,11 @@ export class ReceiptService {
 
   // this is destructive (recrates an object)
   save(receipt: Receipt) {
-    // if (receipt.key) {
-    //   this.receipts$.doc(receipt.key).update(receipt);
-    // } else {
-    //   return this.receipts$.add(receipt);
-    // }
+    if (receipt.id) {
+      return this.http.put<Receipt>(this.backendUrl + '/' + receipt.id, receipt);
+    } else {
+      return this.http.post<Receipt>(this.backendUrl, receipt);
+    }
   }
 
   remove(receipt: Receipt) {

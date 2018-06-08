@@ -33,20 +33,20 @@ export class ItemListComponent implements OnInit {
   displayedColumns = ['select', 'date', 'title', 'description', 'total'];
   dataSource = new MatTableDataSource<Receipt>();
   selection = new SelectionModel<Receipt>(true, []);
+  currentPageInfo: PageInfo = { page: 0, pageSize: 15 };
   isLoadingResults = false;
-  pageLoadSize = 15;
 
   constructor(
     private receiptService: ReceiptService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
 
     setTimeout(() => {
-      this.updateReceipts({ page: 0, pageSize: this.pageLoadSize });
-    }, 3000);
+      this.updateReceipts(this.currentPageInfo);
+    }, 2000);
     // this.updateReceipts({ page: 0, pageSize: 30 });
   }
 
@@ -54,13 +54,15 @@ export class ItemListComponent implements OnInit {
     this.isLoadingResults = true;
     this.receiptService.getReceipts(pageInfo).subscribe((page: Page<Receipt>) => {
       console.log(page);
+
+      this.dataSource.data = page.content;
+
       // actions.forEach(this.udpateDataSource.bind(this));
       this.isLoadingResults = false;
     });
   }
 
   public loadMore() {
-    const pageInfo = { page: 1, pageSize: this.pageLoadSize };
     const lastReceipt = this.dataSource.data[this.dataSource.data.length - 1];
 
     this.isLoadingResults = true;
@@ -71,23 +73,23 @@ export class ItemListComponent implements OnInit {
     // });
   }
 
-  private udpateDataSource(modelChangeAction: ModelChangeAction<Receipt>) {
-    const data = this.dataSource.data;
-    console.log(modelChangeAction);
-    if (modelChangeAction.type === 'added') {
-      const index = _.findIndex(data, { key: modelChangeAction.model.key });
-      if (index === -1) {
-        data.push(modelChangeAction.model);
-      }
-    } else if (modelChangeAction.type === 'removed') {
-      this.deselectByKey(modelChangeAction.model.key);
-      _.remove(data, d => d.key === modelChangeAction.model.key);
-    } else if (modelChangeAction.type === 'modified') {
-      const index = _.findIndex(data, { key: modelChangeAction.model.key });
-      data.splice(index, 1, modelChangeAction.model);
-    }
-    this.dataSource.data = data;
-  }
+  // private udpateDataSource(modelChangeAction: ModelChangeAction<Receipt>) {
+  //   const data = this.dataSource.data;
+  //   console.log(modelChangeAction);
+  //   if (modelChangeAction.type === 'added') {
+  //     const index = _.findIndex(data, { key: modelChangeAction.model.id });
+  //     if (index === -1) {
+  //       data.push(modelChangeAction.model);
+  //     }
+  //   } else if (modelChangeAction.type === 'removed') {
+  //     this.deselectByKey(modelChangeAction.model.id);
+  //     _.remove(data, d => d.key === modelChangeAction.model.id);
+  //   } else if (modelChangeAction.type === 'modified') {
+  //     const index = _.findIndex(data, { key: modelChangeAction.model.id });
+  //     data.splice(index, 1, modelChangeAction.model);
+  //   }
+  //   this.dataSource.data = data;
+  // }
 
   deselectByKey(key: string) {
     const targetDeselect = _.find(this.selection.selected, 'key', key);
@@ -130,6 +132,11 @@ export class ItemListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result === 'Cancel') {
+
+      } else {
+        this.updateReceipts(this.currentPageInfo);
+      }
       console.log(`Dialog result: ${result}`);
     });
   }

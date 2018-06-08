@@ -52,7 +52,7 @@ export class ItemEditComponent implements OnInit {
 
   ngOnInit() {
     this.receipt = this.data.receipt;
-    this.title = this.receipt.key ? 'Edit' : 'New';
+    this.title = this.receipt.id ? 'Edit' : 'New';
   }
 
   handleFileInput(files: FileList) {
@@ -116,12 +116,13 @@ export class ItemEditComponent implements OnInit {
   }
 
   saveReceipt(receipt: Receipt) {
-    this.receiptService.save(receipt);
-    this.dialogRef.close();
+    return this.receiptService.save(receipt).subscribe(() => {
+      this.dialogRef.close();
+    });
   }
 
   onCancel() {
-    this.dialogRef.close();
+    this.dialogRef.close('Cancel');
   }
 
   imageChanged() {
@@ -134,6 +135,6 @@ export class ItemEditComponent implements OnInit {
   }
 
   convertDateToForm(date: Date) {
-   return this.dateUtilsService.convertDateToForm(date);
+    return this.dateUtilsService.convertDateToForm(date);
   }
 }
