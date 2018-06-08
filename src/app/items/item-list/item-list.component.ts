@@ -91,8 +91,8 @@ export class ItemListComponent implements OnInit {
   //   this.dataSource.data = data;
   // }
 
-  deselectByKey(key: string) {
-    const targetDeselect = _.find(this.selection.selected, 'key', key);
+  deselectById(id: number) {
+    const targetDeselect = _.find(this.selection.selected, (s) => (s.id === id));
     this.selection.deselect(targetDeselect);
   }
 
@@ -146,7 +146,14 @@ export class ItemListComponent implements OnInit {
       return;
     }
 
-    this.receiptService.removeMany(this.selection.selected);
+    // this.receiptService.removeMany(this.selection.selected);
+    this.receiptService.remove(this.selection.selected[0]).subscribe((result: Receipt) => {
+      console.log(result);
+      const data = this.dataSource.data;
+      this.deselectById(result.id);
+      _.remove(data, (d: Receipt) => d.id === result.id);
+      this.dataSource.data = data;
+    });
   }
 
   isSingleSelect() {

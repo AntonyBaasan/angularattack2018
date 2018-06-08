@@ -10,6 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SecurityService } from './security.service';
 import { of } from 'rxjs/internal/observable/of';
 import { Page } from '../model/page.model';
+import { ObserveOnMessage } from 'rxjs/internal/operators/observeOn';
 
 @Injectable({
   providedIn: 'root'
@@ -97,21 +98,23 @@ export class ReceiptService {
   // this is destructive (recrates an object)
   save(receipt: Receipt) {
     if (receipt.id) {
-      return this.http.put<Receipt>(this.backendUrl + '/' + receipt.id, receipt);
+      return this.http.put<Receipt>(this.backendUrl, receipt);
     } else {
       return this.http.post<Receipt>(this.backendUrl, receipt);
     }
   }
 
   remove(receipt: Receipt) {
-    // if (receipt.key) {
-    //   this.receipts$.doc(receipt.key).delete();
-    // }
+    if (receipt && receipt.id) {
+      return this.http.delete(this.backendUrl + '/' + receipt.id);
+    }
+
+    return Observable.throw(new Error('Invalid receipt!'));
   }
 
-  removeMany(receipts: Receipt[]) {
-    _.forEach(receipts, r => {
-      this.remove(r);
-    });
-  }
+  // removeMany(receipts: Receipt[]) {
+  //   _.forEach(receipts, r => {
+  //     this.remove(r);
+  //   });
+  // }
 }
