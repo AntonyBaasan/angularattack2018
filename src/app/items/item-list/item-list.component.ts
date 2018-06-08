@@ -131,12 +131,15 @@ export class ItemListComponent implements OnInit {
       data: { receipt: _.cloneDeep(receipt) }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'Cancel') {
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.action === 'Cancel') {
 
-      } else {
+      } else if (result.action === 'Update') {
+        this.updateReceipts(this.currentPageInfo);
+      } else if (result.action === 'AddNew') {
         this.updateReceipts(this.currentPageInfo);
       }
+
       console.log(`Dialog result: ${result}`);
     });
   }

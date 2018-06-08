@@ -118,11 +118,13 @@ export class ItemEditComponent implements OnInit {
   saveReceipt(receipt: Receipt) {
     return this.receiptService.save(receipt).subscribe(() => {
       this.dialogRef.close();
+
+      this.dialogRef.close({ action: this.receipt.id ? 'Update' : 'AddNew', payload: receipt });
     });
   }
 
   onCancel() {
-    this.dialogRef.close('Cancel');
+    this.dialogRef.close({ action: 'Cancel' });
   }
 
   imageChanged() {
