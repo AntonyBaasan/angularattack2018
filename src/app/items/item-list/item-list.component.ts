@@ -52,10 +52,18 @@ export class ItemListComponent implements OnInit {
 
   private updateReceipts(pageInfo: PageInfo) {
     this.isLoadingResults = true;
+    const oldSelection = this.selection.selected;
+    this.selection.clear();
     this.receiptService.getReceipts(pageInfo).subscribe(
       (page: Page<Receipt>) => {
         console.log(page);
         this.dataSource.data = page.content;
+
+        this.dataSource.data.forEach(d => {
+          if (_.findIndex(oldSelection, o => d.id === o.id) !== -1) {
+            this.selection.toggle(d);
+          }
+        });
       },
       () => {},
       () => {
