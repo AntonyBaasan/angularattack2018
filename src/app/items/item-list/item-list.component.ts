@@ -39,60 +39,39 @@ export class ItemListComponent implements OnInit {
   constructor(
     private receiptService: ReceiptService,
     public dialog: MatDialog
-  ) { }
+  ) {}
+
+  refresh() {
+    this.updateReceipts(this.currentPageInfo);
+  }
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
-
-    setTimeout(() => {
-      this.updateReceipts(this.currentPageInfo);
-    }, 2000);
     // this.updateReceipts({ page: 0, pageSize: 30 });
   }
 
   private updateReceipts(pageInfo: PageInfo) {
     this.isLoadingResults = true;
-    this.receiptService.getReceipts(pageInfo).subscribe((page: Page<Receipt>) => {
-      console.log(page);
-
-      this.dataSource.data = page.content;
-
-      // actions.forEach(this.udpateDataSource.bind(this));
-      this.isLoadingResults = false;
-    });
+    this.receiptService.getReceipts(pageInfo).subscribe(
+      (page: Page<Receipt>) => {
+        console.log(page);
+        this.dataSource.data = page.content;
+      },
+      () => {},
+      () => {
+        this.isLoadingResults = false;
+      }
+    );
   }
 
   public loadMore() {
     const lastReceipt = this.dataSource.data[this.dataSource.data.length - 1];
 
     this.isLoadingResults = true;
-    // this.receiptService.loadMore(lastReceipt, pageInfo);
-    // this.receipts$.subscribe(actions => {
-    //   actions.forEach(this.udpateDataSource.bind(this));
-    //   this.isLoadingResults = false;
-    // });
   }
 
-  // private udpateDataSource(modelChangeAction: ModelChangeAction<Receipt>) {
-  //   const data = this.dataSource.data;
-  //   console.log(modelChangeAction);
-  //   if (modelChangeAction.type === 'added') {
-  //     const index = _.findIndex(data, { key: modelChangeAction.model.id });
-  //     if (index === -1) {
-  //       data.push(modelChangeAction.model);
-  //     }
-  //   } else if (modelChangeAction.type === 'removed') {
-  //     this.deselectByKey(modelChangeAction.model.id);
-  //     _.remove(data, d => d.key === modelChangeAction.model.id);
-  //   } else if (modelChangeAction.type === 'modified') {
-  //     const index = _.findIndex(data, { key: modelChangeAction.model.id });
-  //     data.splice(index, 1, modelChangeAction.model);
-  //   }
-  //   this.dataSource.data = data;
-  // }
-
   deselectById(id: number) {
-    const targetDeselect = _.find(this.selection.selected, (s) => (s.id === id));
+    const targetDeselect = _.find(this.selection.selected, s => s.id === id);
     this.selection.deselect(targetDeselect);
   }
 
@@ -131,9 +110,8 @@ export class ItemListComponent implements OnInit {
       data: { receipt: _.cloneDeep(receipt) }
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result.action === 'Cancel') {
-
       } else if (result.action === 'Update') {
         this.updateReceipts(this.currentPageInfo);
       } else if (result.action === 'AddNew') {
@@ -150,13 +128,15 @@ export class ItemListComponent implements OnInit {
     }
 
     // this.receiptService.removeMany(this.selection.selected);
-    this.receiptService.remove(this.selection.selected[0]).subscribe((result: Receipt) => {
-      console.log(result);
-      const data = this.dataSource.data;
-      this.deselectById(result.id);
-      _.remove(data, (d: Receipt) => d.id === result.id);
-      this.dataSource.data = data;
-    });
+    this.receiptService
+      .remove(this.selection.selected[0])
+      .subscribe((result: Receipt) => {
+        console.log(result);
+        const data = this.dataSource.data;
+        this.deselectById(result.id);
+        _.remove(data, (d: Receipt) => d.id === result.id);
+        this.dataSource.data = data;
+      });
   }
 
   isSingleSelect() {
