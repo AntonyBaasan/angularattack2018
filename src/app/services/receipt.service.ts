@@ -22,7 +22,7 @@ export class ReceiptService {
     private af: AngularFirestore,
     private http: HttpClient,
     private securityService: SecurityService
-  ) { }
+  ) {}
 
   getNewReceiptTemplate(): Receipt {
     return {
@@ -36,26 +36,13 @@ export class ReceiptService {
   getReceipts(pageInfo: PageInfo): Observable<Page<Receipt>> {
     const token: string = this.securityService.getToken();
 
-    return this.http
-      .get<any>(this.buildUrl(pageInfo));
-    // .pipe(catchError(this.handleError('getReceipts', [])));
+    return this.http.get<any>(this.buildUrl(pageInfo));
   }
 
   private buildUrl(pageInfo): string {
-    return this.backendUrl + '?page=' + pageInfo.page + '&size=' + pageInfo.pageSize;
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+    return (
+      this.backendUrl + '?page=' + pageInfo.page + '&size=' + pageInfo.pageSize
+    );
   }
 
   // this is destructive (recrates an object)

@@ -20,6 +20,7 @@ import { ModelChangeAction } from '../../model/model-change-action.model';
 import { FilterInfo } from '../../model/filter-info.model';
 import { PageInfo } from '../../model/page-info.model';
 import { Page } from '../../model/page.model';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-item-list',
@@ -38,7 +39,8 @@ export class ItemListComponent implements OnInit {
 
   constructor(
     private receiptService: ReceiptService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public snackBar: MatSnackBar
   ) {}
 
   refresh() {
@@ -52,24 +54,29 @@ export class ItemListComponent implements OnInit {
 
   private updateReceipts(pageInfo: PageInfo) {
     this.isLoadingResults = true;
+    this.receiptService
+      .getReceipts(pageInfo)
+      .subscribe(this.gotNext.bind(this), this.gotError.bind(this));
+  }
+
+  private gotNext(page: Page<Receipt>) {
     const oldSelection = this.selection.selected;
     this.selection.clear();
-    this.receiptService.getReceipts(pageInfo).subscribe(
-      (page: Page<Receipt>) => {
-        console.log(page);
-        this.dataSource.data = page.content;
+    console.log(page);
+    this.dataSource.data = page.content;
 
-        this.dataSource.data.forEach(d => {
-          if (_.findIndex(oldSelection, o => d.id === o.id) !== -1) {
-            this.selection.toggle(d);
-          }
-        });
-      },
-      () => {},
-      () => {
-        this.isLoadingResults = false;
+    this.dataSource.data.forEach(d => {
+      if (_.findIndex(oldSelection, o => d.id === o.id) !== -1) {
+        this.selection.toggle(d);
       }
-    );
+    });
+    this.isLoadingResults = false;
+  }
+
+  private gotError(error) {
+    console.log(error);
+    this.snackBar.open('Something went wrong!', '', { duration: 3000 });
+    this.isLoadingResults = false;
   }
 
   public loadMore() {
