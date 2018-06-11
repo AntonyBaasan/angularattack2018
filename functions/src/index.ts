@@ -7,6 +7,9 @@ import * as Busboy from 'busboy';
 // https://firebase.google.com/docs/functions/typescript
 
 export const receiptdetector = functions.https.onRequest((req, res) => {
+  if (req.method === 'OPTIONS') {
+    sendResponse(res, 'Hello from firebase');
+  }
   if (req.method === 'POST') {
     const busboy = new Busboy({ headers: req.headers });
     const uploads = {};
@@ -72,7 +75,8 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
     // Return a "method not allowed" error
     res.header('Content-Type', 'application/json');
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Methods', '*');
+    res.header('Access-Control-Allow-Headers', '*');
     res.status(405).end();
   }
 });
@@ -80,7 +84,8 @@ export const receiptdetector = functions.https.onRequest((req, res) => {
 function sendResponse(res, obj) {
   res.header('Content-Type', 'application/json');
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Headers', '*');
   res.send(obj);
 }
 

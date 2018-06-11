@@ -7,6 +7,9 @@ const Busboy = require("busboy");
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
 exports.receiptdetector = functions.https.onRequest((req, res) => {
+    if (req.method === 'OPTIONS') {
+        sendResponse(res, 'Hello from firebase');
+    }
     if (req.method === 'POST') {
         const busboy = new Busboy({ headers: req.headers });
         const uploads = {};
@@ -61,14 +64,16 @@ exports.receiptdetector = functions.https.onRequest((req, res) => {
         // Return a "method not allowed" error
         res.header('Content-Type', 'application/json');
         res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        res.header('Access-Control-Allow-Methods', '*');
+        res.header('Access-Control-Allow-Headers', '*');
         res.status(405).end();
     }
 });
 function sendResponse(res, obj) {
     res.header('Content-Type', 'application/json');
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Methods', '*');
+    res.header('Access-Control-Allow-Headers', '*');
     res.send(obj);
 }
 function detectFile(buffer) {
