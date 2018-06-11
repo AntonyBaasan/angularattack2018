@@ -22,6 +22,7 @@ import { ImageDropComponent } from '../../shared/image-drop/image-drop.component
 import { FormControl } from '@angular/forms';
 import { ReceiptDetectionResult } from '../../model/receipt-detection-result.model';
 import { DateUtilsService } from '../../services/date-utils.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-item-edit',
@@ -47,8 +48,9 @@ export class ItemEditComponent implements OnInit {
     private imagedetectorService: ImagedetectorService,
     public dialogRef: MatDialogRef<ItemEditComponent>,
     public dateUtilsService: DateUtilsService,
+    public snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.receipt = this.data.receipt;
@@ -74,10 +76,14 @@ export class ItemEditComponent implements OnInit {
         this.detectedMessage = data.message;
         this.detectedText = data.result.text;
         this.receiptDetectionResult = this.recognizeReceipt(data.result.text);
-        this.receipt = this.convertDetectionToReceipt(this.receipt, this.receiptDetectionResult);
+        this.receipt = this.convertDetectionToReceipt(
+          this.receipt,
+          this.receiptDetectionResult
+        );
       },
       error => {
         console.log(error);
+        this.snackBar.open('Something went wrong!', '', { duration: 3000 });
       },
       () => {
         setTimeout(() => {
@@ -87,7 +93,10 @@ export class ItemEditComponent implements OnInit {
     );
   }
 
-  convertDetectionToReceipt(receipt: Receipt, rdr: ReceiptDetectionResult): Receipt {
+  convertDetectionToReceipt(
+    receipt: Receipt,
+    rdr: ReceiptDetectionResult
+  ): Receipt {
     if (rdr.title[0]) {
       receipt.title = rdr.title[0];
     }
@@ -116,11 +125,19 @@ export class ItemEditComponent implements OnInit {
   }
 
   saveReceipt(receipt: Receipt) {
-    return this.receiptService.save(receipt).subscribe(() => {
-      this.dialogRef.close();
+    return this.receiptService.save(receipt).subscribe(
+      () => {
+        this.dialogRef.close();
 
-      this.dialogRef.close({ action: this.receipt.id ? 'Update' : 'AddNew', payload: receipt });
-    });
+        this.dialogRef.close({
+          action: this.receipt.id ? 'Update' : 'AddNew',
+          payload: receipt
+        });
+      },
+      error => {
+        this.snackBar.open('Something went wrong!', '', { duration: 3000 });
+      }
+    );
   }
 
   onCancel() {

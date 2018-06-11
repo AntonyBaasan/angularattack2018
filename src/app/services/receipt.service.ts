@@ -48,9 +48,9 @@ export class ReceiptService {
   // this is destructive (recrates an object)
   save(receipt: Receipt) {
     if (receipt.id) {
-      return this.http.put<Receipt>(this.backendUrl, receipt);
+      return this.http.put<Receipt>(this.backendUrl + 'asdf', receipt);
     } else {
-      return this.http.post<Receipt>(this.backendUrl, receipt);
+      return this.http.post<Receipt>(this.backendUrl + 'asdfa', receipt);
     }
   }
 
