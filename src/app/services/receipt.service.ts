@@ -3,14 +3,12 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { Receipt } from '../model/receipt.model';
-import { map, last, tap, catchError } from 'rxjs/operators';
-import { ModelChangeAction } from '../model/model-change-action.model';
 import { PageInfo } from '../model/page-info.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { SecurityService } from './security.service';
-import { of } from 'rxjs/internal/observable/of';
 import { Page } from '../model/page.model';
-import { ObserveOnMessage } from 'rxjs/internal/operators/observeOn';
+import { URLSearchParams } from '@angular/http';
+import { FilterInfo } from '../model/filter-info.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +16,7 @@ import { ObserveOnMessage } from 'rxjs/internal/operators/observeOn';
 export class ReceiptService {
   private backendUrl = 'http://localhost:8080/receipts';
 
-  constructor(
-    private af: AngularFirestore,
-    private http: HttpClient,
-    private securityService: SecurityService
-  ) {}
+  constructor(private http: HttpClient) {}
 
   getNewReceiptTemplate(): Receipt {
     return {
@@ -33,16 +27,30 @@ export class ReceiptService {
     };
   }
 
-  getReceipts(pageInfo: PageInfo): Observable<Page<Receipt>> {
-    const token: string = this.securityService.getToken();
-
-    return this.http.get<any>(this.buildUrl(pageInfo));
+  getReceipts(
+    pageInfo: PageInfo,
+    filterInfo: FilterInfo
+  ): Observable<Page<Receipt>> {
+    return this.http.get<any>(
+      this.backendUrl +
+        this.buildUrl(pageInfo, '?') +
+        this.buildUrl(filterInfo, '&')
+    );
   }
 
-  private buildUrl(pageInfo): string {
-    return (
-      this.backendUrl + '?page=' + pageInfo.page + '&size=' + pageInfo.pageSize
-    );
+  private buildUrl(obj: any, prefix: string): string {
+    const queryString = new URLSearchParams();
+    for (const key in obj) {
+      if (!_.isNil(obj[key])) {
+        queryString.set(key, obj[key]);
+      }
+    }
+    const result = queryString.toString();
+    if (result) {
+      return prefix + result;
+    } else {
+      return '';
+    }
   }
 
   // this is destructive (recrates an object)

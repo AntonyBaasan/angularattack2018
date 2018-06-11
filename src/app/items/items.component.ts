@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { MatFormField, MatInput } from '@angular/material';
 import { ItemListComponent } from './item-list/item-list.component';
+import { FilterInfo } from '../model/filter-info.model';
+import { SecurityService } from '../services/security.service';
 
 @Component({
   selector: 'app-items',
@@ -13,7 +15,10 @@ import { ItemListComponent } from './item-list/item-list.component';
 export class ItemsComponent implements OnInit {
   @ViewChild(ItemListComponent) itemList: ItemListComponent;
   public test: String = 'test';
-  private buffer = 20;
+  public filterInfo: FilterInfo = {};
+
+  // injecting securityService here is must! - it resolves Firebase Token issue.
+  constructor(securityService: SecurityService) {}
 
   ngOnInit() {}
 
@@ -26,6 +31,5 @@ export class ItemsComponent implements OnInit {
       console.log('load data!!!');
       this.itemList.loadMore();
     }
-
   }
 }

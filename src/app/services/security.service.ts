@@ -19,7 +19,6 @@ export class SecurityService {
     this.afAuth.idToken.subscribe(token => {
         this.token = token;
     });
-
   }
 
   public getToken(): string {

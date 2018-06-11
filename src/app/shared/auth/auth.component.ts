@@ -42,9 +42,7 @@ export class AuthComponent implements OnInit {
   }
   showToken() {
     this.afAuth.idToken.subscribe(token => {
-      setTimeout(() => {
         this.token = token;
-      }, 0);
     });
   }
 

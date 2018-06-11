@@ -55,7 +55,7 @@ export class ItemListComponent implements OnInit {
   private updateReceipts(pageInfo: PageInfo) {
     this.isLoadingResults = true;
     this.receiptService
-      .getReceipts(pageInfo)
+      .getReceipts(pageInfo, this.filterInfo)
       .subscribe(this.gotNext.bind(this), this.gotError.bind(this));
   }
 
