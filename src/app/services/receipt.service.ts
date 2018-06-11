@@ -58,43 +58,6 @@ export class ReceiptService {
     };
   }
 
-  // getReceipts(pageInfo: PageInfo): Observable<ModelChangeAction<Receipt>[]> {
-  //   this.receipts$ = this.af.collection<Receipt>('receipts', ref =>
-  //     ref.orderBy('date', 'desc').limit(pageInfo.pageSize)
-  //   );
-
-  //   return this.receipts$
-  //     .stateChanges()
-  //     .pipe(map(this.mapActionsToModelChangeActions));
-  // }
-
-  // private mapActionsToModelChangeActions(
-  //   actions: DocumentChangeAction<Receipt>[]
-  // ): ModelChangeAction<Receipt>[] {
-  //   return actions.map(a => {
-  //     // a.type
-  //     // console.log(a);
-  //     return {
-  //       type: a.type,
-  //       model: {
-  //         key: a.payload.doc.id,
-  //         ...a.payload.doc.data()
-  //       }
-  //     };
-  //   });
-  // }
-
-  // loadMore(lastReceipt: Receipt, pageInfo: PageInfo) {
-  //   const first = this.af.collection<Receipt>('receipts', ref =>
-  //     ref
-  //       .orderBy('date', 'desc')
-  //       .startAfter(lastReceipt.date)
-  //       .limit(pageInfo.pageSize)
-  //   );
-
-  //   return first.stateChanges().pipe(map(this.mapActionsToModelChangeActions));
-  // }
-
   // this is destructive (recrates an object)
   save(receipt: Receipt) {
     if (receipt.id) {
