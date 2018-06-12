@@ -9,6 +9,7 @@ import { SecurityService } from './security.service';
 import { Page } from '../model/page.model';
 import { URLSearchParams } from '@angular/http';
 import { FilterInfo } from '../model/filter-info.model';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ import { FilterInfo } from '../model/filter-info.model';
 export class ReceiptService {
   private backendUrl = 'http://localhost:8080/receipts';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
   getNewReceiptTemplate(): Receipt {
     return {
@@ -42,7 +43,11 @@ export class ReceiptService {
     const queryString = new URLSearchParams();
     for (const key in obj) {
       if (!_.isNil(obj[key])) {
-        queryString.set(key, obj[key]);
+        if (obj[key] instanceof Date) {
+          queryString.set(key, this.datePipe.transform(obj[key], 'MM/dd/yyyy'));
+        } else {
+          queryString.set(key, obj[key]);
+        }
       }
     }
     const result = queryString.toString();

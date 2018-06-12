@@ -72,11 +72,11 @@ export class ItemFilterComponent implements OnInit {
     let resultString = '';
     if (this.filterInfo.startDate) {
       resultString +=
-        'from ' + this.datePipe.transform(this.filterInfo.startDate);
+        'from ' + this.datePipe.transform(this.filterInfo.startDate, 'MM/dd/yyyy');
     }
     if (this.filterInfo.endDate) {
       resultString +=
-        ' until ' + this.datePipe.transform(this.filterInfo.endDate);
+        ' until ' + this.datePipe.transform(this.filterInfo.endDate, 'MM/dd/yyyy');
     }
 
     return resultString;
